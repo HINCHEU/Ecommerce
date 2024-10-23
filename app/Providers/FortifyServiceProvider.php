@@ -40,7 +40,7 @@ class FortifyServiceProvider extends ServiceProvider
                 if(Auth::user() -> is_admin){
                     return redirect('/dashboard');
                 }
-                return redirect('/user1');
+                return redirect('/users');
             }
         });
          $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
