@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Illuminate\Support\Facades\Auth;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -36,16 +37,19 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LoginResponse::class, new class implements LogoutResponse {
             public function toResponse($request)
             {
-
-                return redirect('/');
+                if(Auth::user() -> is_admin){
+                    return redirect('/dashboard');
+                }
+                return redirect('/user1');
             }
         });
-        // $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
-        //     public function toResponse($request)
-        //     {
-        //         return redirect('/login');
-        //     }
-        // });
+         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
+             public function toResponse($request)
+             {
+
+                 return redirect('/login');
+             }
+         });
     }
 
     /**
