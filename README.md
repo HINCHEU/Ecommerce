@@ -93,3 +93,10 @@ git checkout feature/add-new-functionality
 ```cmd:
 git merge main
 ```
+3. Resolve Any Conflicts (if necessary):
+```cmd:
+git add .
+git commit -m "Resolve merge conflicts"
+git push origin feature/add-new-functionality
+
+```
