@@ -13,7 +13,7 @@
             <div class="center-heading">Main Home</div>
             <ul class="menu-list">
                 <li class="menu-item active">
-                    <a href="javascript:void(0);" class="menu-item-button">
+                    <a href="{{url('/dashboard')}}" class="menu-item-button">
                         <div class="icon"><i class="icon-grid"></i></div>
                         <div class="text" >Dashboard</div>
                     </a>
@@ -67,12 +67,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="add-product.html" class="">
+                            <a href="{{url('/add_product')}}" class="">
                                 <div class="text">Add Product</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="product-list.html" class="">
+                            <a href="{{url('/product_list')}}" class="">
                                 <div class="text">Product List</div>
                             </a>
                         </li>
@@ -85,12 +85,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="category-list.html" class="">
+                            <a href="{{url('/category_list')}}" class="">
                                 <div class="text">Category list</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="new-category.html" class="">
+                            <a href="{{url('/new_category')}}" class="">
                                 <div class="text">New category</div>
                             </a>
                         </li>
@@ -103,12 +103,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="attributes.html" class="">
+                            <a href="{{url('/attributes')}}" class="">
                                 <div class="text">Attributes</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="add-attributes.html" class="">
+                            <a href="{{url('/add_attribute')}}" class="">
                                 <div class="text">Add attributes</div>
                             </a>
                         </li>
@@ -121,17 +121,17 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="oder-list.html" class="">
+                            <a href="{{url('/order_list')}}" class="">
                                 <div class="text">Order list</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="oder-detail.html" class="">
+                            <a href="{{url('/order_detail')}}" class="">
                                 <div class="text">Order detail</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="oder-tracking.html" class="">
+                            <a href="{{url('/order_tracking')}}" class="">
                                 <div class="text">Order tracking</div>
                             </a>
                         </li>
@@ -144,16 +144,16 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="all-user.html" class="">
+                            <a href="{{url('/all_user')}}" class="">
                                 <div class="text">All user</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="add-new-user.html" class="">
+                            <a href="{{url('/add_new_user')}}" class="">
                                 <div class="text">Add new user</div>
                             </a>
                         </li>
-                        <li class="sub-menu-item">
+                        {{-- <li class="sub-menu-item">
                             <a href="login.html" class="">
                                 <div class="text">Login</div>
                             </a>
@@ -162,7 +162,7 @@
                             <a href="sign-up.html" class="">
                                 <div class="text">Sign up</div>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
                 <li class="menu-item has-children">
@@ -172,30 +172,30 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="sub-menu-item">
-                            <a href="all-roles.html" class="">
+                            <a href="{{url('/all_roles')}}" class="">
                                 <div class="text">All roles</div>
                             </a>
                         </li>
                         <li class="sub-menu-item">
-                            <a href="create-role.html" class="">
+                            <a href="{{url('/create_role')}}" class="">
                                 <div class="text">Create role</div>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="menu-item">
+                {{-- <li class="menu-item">
                     <a href="gallery.html" class="">
                         <div class="icon"><i class="icon-image"></i></div>
                         <div class="text">Gallery</div>
                     </a>
-                </li>
+                </li> --}}
                 <li class="menu-item">
-                    <a href="report.html" class="">
+                    <a href="{{url('/report')}}" class="">
                         <div class="icon"><i class="icon-pie-chart"></i></div>
                         <div class="text">Report</div>
                     </a>
                 </li>
-            </ul>
+            </ul>vv
         </div>
         <div class="center-item">
             <div class="center-heading">Setting</div>
