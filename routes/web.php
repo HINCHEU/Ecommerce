@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\IsAdmin;
 
 Route::get('/users', [UserController::class, 'index']);
 // Route::get('/', function () {
@@ -10,79 +11,85 @@ Route::get('/users', [UserController::class, 'index']);
 // });
 
 
-Route::get('/dashboard', function () {
+Route::middleware(['auth', IsAdmin::class])->group(function () {
+    // Route::get('/admin', function () {
+    //     //This is for admin interface
+    //     return view('auth.index');
+    // });
+    Route::get('/dashboard', function () {
 
-    return view('admin/main');
-});
+        return view('admin/main');
+    });
 
-Route::get('/add_product', function () {
+    Route::get('/add_product', function () {
 
-    return view('admin/add_product');
-});
+        return view('admin/add_product');
+    });
 
-Route::get('/product_list', function () {
+    Route::get('/product_list', function () {
 
-    return view('admin/product_list');
-});
+        return view('admin/product_list');
+    });
 
-Route::get('/category_list', function () {
+    Route::get('/category_list', function () {
 
-    return view('admin/category_list');
-});
+        return view('admin/category_list');
+    });
 
-Route::get('/new_category', function () {
+    Route::get('/new_category', function () {
 
-    return view('admin/new_category');
-});
+        return view('admin/new_category');
+    });
 
-Route::get('/attributes', function () {
+    Route::get('/attributes', function () {
 
-    return view('admin/attributes');
-});
+        return view('admin/attributes');
+    });
 
-Route::get('/add_attribute', function () {
+    Route::get('/add_attribute', function () {
 
-    return view('admin/add_attribute');
-});
+        return view('admin/add_attribute');
+    });
 
-Route::get('/order_list', function () {
+    Route::get('/order_list', function () {
 
-    return view('admin/order_list');
-});
+        return view('admin/order_list');
+    });
 
-Route::get('/order_detail', function () {
+    Route::get('/order_detail', function () {
 
-    return view('admin/order_detail');
-});
+        return view('admin/order_detail');
+    });
 
-Route::get('/order_tracking', function () {
+    Route::get('/order_tracking', function () {
 
-    return view('admin/order_tracking');
-});
+        return view('admin/order_tracking');
+    });
 
-Route::get('/all_user', function () {
+    Route::get('/all_user', function () {
 
-    return view('admin/all_user');
-});
+        return view('admin/all_user');
+    });
 
-Route::get('/add_new_user', function () {
+    Route::get('/add_new_user', function () {
 
-    return view('admin/add_new_user');
-});
+        return view('admin/add_new_user');
+    });
 
-Route::get('/all_roles', function () {
+    Route::get('/all_roles', function () {
 
-    return view('admin/all_roles');
-});
+        return view('admin/all_roles');
+    });
 
-Route::get('/create_role', function () {
+    Route::get('/create_role', function () {
 
-    return view('admin/create_role');
-});
+        return view('admin/create_role');
+    });
 
-Route::get('/report', function () {
+    Route::get('/report', function () {
 
-    return view('admin/report');
+        return view('admin/report');
+    });
 });
 
 // Route::get('/setting', function () {
