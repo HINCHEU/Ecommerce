@@ -16,7 +16,9 @@ class ImageSeeder extends Seeder
     {
         // List of colors to add
         $images = [
-            ['image' => 'cheu.png', 'productVariant_id' => '1'],
+            ['image' => 'cheu.png',
+                'productVariant_id' => '1',
+            ],
         ];
 
         // Insert each color into the database

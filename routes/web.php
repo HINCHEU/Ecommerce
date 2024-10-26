@@ -26,10 +26,9 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         return view('admin/add_product');
     });
 
-    Route::get('/product_list', function () {
-
-        return view('admin/product_list');
-    });
+    Route::get('/product_list', [\App\Http\Controllers\ProductController::class, 'index'])->name('admin.show_product');
+    Route::get('/add_product', [\App\Http\Controllers\ProductController::class, 'show'])->name('admin.show');
+    Route::post('/add_product', [\App\Http\Controllers\ProductController::class, 'create'])->name('admin.create');
 
     Route::get('/category_list', function () {
 
@@ -97,9 +96,8 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 //     return view('admin/setting');
 // });
 //========================================================
-Route::get('/', function () {
-    return view('user/index');
-});
+Route::get('/', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
+//Route::get('/{id}', [\App\Http\Controllers\UserController::class, 'product_detail'])->name('user.detail');
 
 Route::get('/product', function () {
     return view('user/product');
