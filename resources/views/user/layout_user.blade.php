@@ -19,7 +19,7 @@
 		</span>
 	</div>
 
-@include('user/modal')
+
 
 @include('user/scripts')
 
