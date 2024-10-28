@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\ColorProductVariant;
 use App\Models\Product;
 use App\Models\Image;
 use App\Models\ProductVariant;
 use App\Models\Size;
+use App\Models\SizeProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,6 +46,42 @@ class ProductController extends Controller
         return view('admin.product_list', compact('product'));
     }
 
+    // ProductController.php
+    public function getProduct($id)
+    {
+
+        $product = DB::table('products')
+        ->select(
+            'products.id',
+            'products.name',
+            DB::raw('GROUP_CONCAT(sizes.size) AS size'),
+            DB::raw('GROUP_CONCAT(colors.color) AS color'),
+            DB::raw('GROUP_CONCAT(images.image) AS images')
+        )
+        ->leftJoin('product_variants', 'products.id', '=', 'product_variants.product_id')
+        ->leftJoin('images', 'product_variants.id', '=', 'images.productVariant_id')
+        ->leftJoin('colors', 'product_variants.color_id', '=', 'colors.id')
+        ->leftJoin('sizes', 'product_variants.size_id', '=', 'sizes.id')
+        ->groupBy('products.id', 'products.name')
+        ->orderBy('products.id')
+        ->orderBy('products.name')
+        ->get();
+
+
+        if ($product) {
+            return response()->json([
+                'success' => true,
+                'product' => $product
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found'
+            ]);
+        }
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,8 +98,8 @@ class ProductController extends Controller
         $lastProductId = DB::table('products')->latest('id')->value('id');
         $product_variants = new ProductVariant();
         $product_variants->product_id = $lastProductId;
-        $product_variants->color_id = $request->input('color');
-        $product_variants->size_id = $request->input('size');
+        // $product_variants->color_id = $request->input('color');
+        // $product_variants->size_id = $request->input('size');
         $product_variants->price = $request->input('price');
         $product_variants->quanity = $request->input('quantity');
         $product_variants->save();
@@ -87,6 +125,36 @@ class ProductController extends Controller
             }
         }
 
+        
+
+        $request->validate([
+            'sizes' => 'required|array',
+            'sizes.*' => 'exists:sizes,id', // Assuming 'sizes' table has an 'id'
+        ]);
+
+        // Loop through each checked size and create a new product variant
+        foreach ($request->sizes as $sizeId) {
+            SizeProductVariant::create([
+                'size_id' => $sizeId,
+                'productVariant_id' => $lastProductVariantId, // Adjust the column name as necessary
+                // Add other necessary fields here
+            ]);
+        }
+
+        $request->validate([
+            'colors' => 'required|array',
+            'colors.*' => 'exists:colors,id', // Assuming 'colors' table has an 'id'
+        ]);
+
+        // Loop through each checked size and create a new product variant
+        foreach ($request->colors as $colorId) {
+            ColorProductVariant::create([
+                'color_id' => $colorId,
+                'productVariant_id' => $lastProductVariantId, // Adjust the column name as necessary
+                // Add other necessary fields here
+            ]);
+        }
+
 
         return redirect('/add_product');
     }
@@ -110,7 +178,6 @@ class ProductController extends Controller
         $color = Color::all();
 
         return view('admin.add_product', compact('category', 'size', 'color'));
-
     }
 
     /**

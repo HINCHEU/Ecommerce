@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
 use App\Http\Middleware\IsAdmin;
 
-Route::get('/users', [UserController::class, 'index']);
+// Route::get('/users', [UserController::class, 'index']);
+Route::get('/users', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
 // Route::get('/', function () {
 //     // return view('admin/index');
 //     return view('admin/login');
@@ -114,3 +116,7 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('user/contact');
 });
+
+
+// web.php
+Route::get('/product/{id}', [ProductController::class, 'getProduct'])->name('product.get');

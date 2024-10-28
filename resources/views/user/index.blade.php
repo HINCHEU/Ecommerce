@@ -1,7 +1,7 @@
 @extends('user.layout_user')
 @section('main_content')
     <!-- Modal -->
-    <div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
+    {{-- <div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="Modal_variant">
         <div class="overlay-modal1 js-hide-modal1"></div>
 
         <div class="container">
@@ -19,10 +19,10 @@
                                 <div class="slick3 gallery-lb">
                                     <div class="item-slick3" data-thumb="user/images/product-detail-01.jpg">
                                         <div class="wrap-pic-w pos-relative">
-                                            <img src="{{asset('storage/images/')}}" alt="IMG-PRODUCT">
+                                            <img src="{{ asset('storage/images/') }}" alt="IMG-PRODUCT">
 
                                             <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                               href="user/images/product-detail-01.jpg">
+                                                href="user/images/product-detail-01.jpg">
                                                 <i class="fa fa-expand"></i>
                                             </a>
                                         </div>
@@ -33,7 +33,7 @@
                                             <img src="user/images/product-detail-02.jpg" alt="IMG-PRODUCT">
 
                                             <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                               href="user/images/product-detail-02.jpg">
+                                                href="user/images/product-detail-02.jpg">
                                                 <i class="fa fa-expand"></i>
                                             </a>
                                         </div>
@@ -44,7 +44,7 @@
                                             <img src="user/images/product-detail-03.jpg" alt="IMG-PRODUCT">
 
                                             <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                               href="user/images/product-detail-03.jpg">
+                                                href="user/images/product-detail-03.jpg">
                                                 <i class="fa fa-expand"></i>
                                             </a>
                                         </div>
@@ -62,8 +62,8 @@
                             </h4>
 
                             <span class="mtext-106 cl2">
-								 hh
-							</span>
+                                hh
+                            </span>
 
                             <p class="stext-102 cl3 p-t-23">
                                 hh
@@ -117,7 +117,7 @@
                                             </div>
 
                                             <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                   name="num-product" value="1">
+                                                name="num-product" value="1">
 
                                             <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
@@ -136,24 +136,24 @@
                             <div class="flex-w flex-m p-l-100 p-t-40 respon7">
                                 <div class="flex-m bor9 p-r-10 m-r-11">
                                     <a href="#"
-                                       class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
-                                       data-tooltip="Add to Wishlist">
+                                        class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
+                                        data-tooltip="Add to Wishlist">
                                         <i class="zmdi zmdi-favorite"></i>
                                     </a>
                                 </div>
 
                                 <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                                   data-tooltip="Facebook">
+                                    data-tooltip="Facebook">
                                     <i class="fa fa-facebook"></i>
                                 </a>
 
                                 <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                                   data-tooltip="Twitter">
+                                    data-tooltip="Twitter">
                                     <i class="fa fa-twitter"></i>
                                 </a>
 
                                 <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-                                   data-tooltip="Google Plus">
+                                    data-tooltip="Google Plus">
                                     <i class="fa fa-google-plus"></i>
                                 </a>
                             </div>
@@ -163,7 +163,183 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+
+
+    <div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="Modal_variant">
+        <div class="overlay-modal1 js-hide-modal1"></div>
+        <div class="container">
+            <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+                <button class="how-pos3 hov3 trans-04 js-hide-modal1">
+                    <img src="user/images/icons/icon-close.png" alt="CLOSE">
+                </button>
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-7 p-b-30">
+                        <div class="p-l-25 p-r-30 p-lr-0-lg">
+                            <div class="wrap-slick3 flex-sb flex-w">
+                                <div class="wrap-slick3-dots"></div>
+                                <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+                                <div class="slick3 gallery-lb">
+                                    <div class="item-slick3" data-thumb="user/images/product-detail-01.jpg">
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img src="{{ asset('storage/images/') }}" alt="IMG-PRODUCT">
+
+                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                                href="user/images/product-detail-01.jpg">
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="item-slick3" data-thumb="user/images/product-detail-02.jpg">
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img src="user/images/product-detail-02.jpg" alt="IMG-PRODUCT">
+
+                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                                href="user/images/product-detail-02.jpg">
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="item-slick3" data-thumb="user/images/product-detail-03.jpg">
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img src="user/images/product-detail-03.jpg" alt="IMG-PRODUCT">
+
+                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                                href="user/images/product-detail-03.jpg">
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- <h4> class="mtext-105 cl2 js-name-detail p-b-14" id="product-name">Product Name</h4>
+                        <span class="mtext-106 cl2" id="product-price">Price</span>
+                        <p class="stext-102 cl3 p-t-23" id="product-description">Description</p> --}}
+
+
+                    <div class="col-md-6 col-lg-5 p-b-30">
+                        <div class="p-r-50 p-t-5 p-lr-0-lg">
+                            <h2 id="product-id">Product ID: </h2>
+                            <h4 class="mtext-105 cl2 js-name-detail p-b-14" id="product-name">
+
+                            </h4>
+
+                            <span class="mtext-106 cl2" id="product-price">
+
+                            </span>
+
+                            <p class="stext-102 cl3 p-t-23" id="product-description">
+
+                            </p>
+
+                            <!--  -->
+                            <div class="p-t-33">
+                                <div class="flex-w flex-r-m p-b-10">
+                                    <div class="size-203 flex-c-m respon6">
+                                        Size
+                                    </div>
+
+                                    <div class="size-204 respon6-next">
+                                        <div class="rs1-select2 bor8 bg0">
+                                            <select class="js-select2" name="time">
+                                                <option>Choose an option</option>
+                                                <option>Size S</option>
+                                                <option>Size M</option>
+                                                <option>Size L</option>
+                                                <option>Size XL</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex-w flex-r-m p-b-10">
+                                    <div class="size-203 flex-c-m respon6">
+                                        Color
+                                    </div>
+
+                                    <div class="size-204 respon6-next">
+                                        <div class="rs1-select2 bor8 bg0">
+                                            <select class="js-select2" name="time">
+                                                <option>Choose an option</option>
+                                                <option>Red</option>
+                                                <option>Blue</option>
+                                                <option>White</option>
+                                                <option>Grey</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex-w flex-r-m p-b-10">
+                                    <div class="size-204 flex-w flex-m respon6-next">
+                                        <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus"></i>
+                                            </div>
+
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                                name="num-product" value="1">
+
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                            Add to cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--  -->
+                            <div class="flex-w flex-m p-l-100 p-t-40 respon7">
+                                <div class="flex-m bor9 p-r-10 m-r-11">
+                                    <a href="#"
+                                        class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
+                                        data-tooltip="Add to Wishlist">
+                                        <i class="zmdi zmdi-favorite"></i>
+                                    </a>
+                                </div>
+
+                                <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                    data-tooltip="Facebook">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+
+                                <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                    data-tooltip="Twitter">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+
+                                <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                    data-tooltip="Google Plus">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
     </div>
+
+
     <!-- Slider -->
     <section class="section-slide">
         <div class="wrap-slick1">
@@ -185,7 +361,7 @@
 
                             <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
                                 <a href="product.html"
-                                   class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                    class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
                                     Shop Now
                                 </a>
                             </div>
@@ -202,8 +378,7 @@
                                 </span>
                             </div>
 
-                            <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn"
-                                 data-delay="800">
+                            <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
                                 <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
                                     Jackets & Coats
                                 </h2>
@@ -211,7 +386,7 @@
 
                             <div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
                                 <a href="product.html"
-                                   class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                    class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
                                     Shop Now
                                 </a>
                             </div>
@@ -223,14 +398,14 @@
                     <div class="container h-full">
                         <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
                             <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft"
-                                 data-delay="0">
+                                data-delay="0">
                                 <span class="ltext-101 cl2 respon2">
                                     Men Collection 2018
                                 </span>
                             </div>
 
                             <div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight"
-                                 data-delay="800">
+                                data-delay="800">
                                 <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
                                     New arrivals
                                 </h2>
@@ -238,7 +413,7 @@
 
                             <div class="layer-slick1 animated visible-false" data-appear="rotateIn" data-delay="1600">
                                 <a href="product.html"
-                                   class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                    class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
                                     Shop Now
                                 </a>
                             </div>
@@ -260,7 +435,7 @@
                         <img src="user/images/banner-01.jpg" alt="IMG-BANNER">
 
                         <a href="product.html"
-                           class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
                             <div class="block1-txt-child1 flex-col-l">
                                 <span class="block1-name ltext-102 trans-04 p-b-8">
                                     Women
@@ -286,7 +461,7 @@
                         <img src="user/images/banner-02.jpg" alt="IMG-BANNER">
 
                         <a href="product.html"
-                           class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
                             <div class="block1-txt-child1 flex-col-l">
                                 <span class="block1-name ltext-102 trans-04 p-b-8">
                                     Men
@@ -312,7 +487,7 @@
                         <img src="user/images/banner-03.jpg" alt="IMG-BANNER">
 
                         <a href="product.html"
-                           class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
                             <div class="block1-txt-child1 flex-col-l">
                                 <span class="block1-name ltext-102 trans-04 p-b-8">
                                     Accessories
@@ -395,7 +570,7 @@
                         </button>
 
                         <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product"
-                               placeholder="Search">
+                            placeholder="Search">
                     </div>
                 </div>
 
@@ -565,27 +740,27 @@
 
                             <div class="flex-w p-t-4 m-r--5">
                                 <a href="#"
-                                   class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
                                     Fashion
                                 </a>
 
                                 <a href="#"
-                                   class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
                                     Lifestyle
                                 </a>
 
                                 <a href="#"
-                                   class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
                                     Denim
                                 </a>
 
                                 <a href="#"
-                                   class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
                                     Streetstyle
                                 </a>
 
                                 <a href="#"
-                                   class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
                                     Crafts
                                 </a>
                             </div>
@@ -593,8 +768,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row isotope-grid">
-                @foreach($product as $item)
+            {{-- <div class="row isotope-grid">
+                @foreach ($product as $item)
                     <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
                         <!-- Block2 -->
                         <div class="block2">
@@ -602,7 +777,7 @@
                                 <img src="{{asset('storage/images/'. $item->image)}}" alt="IMG-PRODUCT"
                                      style="width: 350px; height: 400px; object-fit: cover">
 
-                                <a href=""
+                                <a href="" id="product_variant"
                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
                                     Quick View
                                 </a>
@@ -634,8 +809,48 @@
 
                     </div>
                 @endforeach
-            </div>
+            </div> --}}
 
+            <div class="row isotope-grid">
+                @foreach ($product as $index => $item)
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                        <!-- Block2 -->
+                        <div class="block2">
+                            <div class="block2-pic hov-img0">
+                                <img src="{{ asset('storage/images/' . $item->image) }}" alt="IMG-PRODUCT"
+                                    style="width: 350px; height: 400px; object-fit: cover">
+
+                                <a href="javascript:void(0);" id="product_variant"
+                                    onclick="showProductModal({{ $item->id }})"
+                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Quick View
+                                </a>
+                            </div>
+
+                            <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt-child1 flex-col-l ">
+                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                        {{ $item->product_name }}
+                                    </a>
+
+                                    <span class="stext-105 cl3">
+                                        ${{ $item->price }}
+                                    </span>
+                                </div>
+
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                            src="user/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                            src="user/images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
             <!-- Load more -->
             <div class="flex-c-m flex-w w-full p-t-45">
                 <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
@@ -644,4 +859,40 @@
             </div>
         </div>
     </section>
+    <script>
+        function showProductModal(productId) {
+            // Fetch product data from the server
+            fetch(`/product/${productId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const product = data.product;
+
+                        // Set the product data in the modal
+                        document.getElementById('product-id').innerText = "Product ID: " + product.id;
+                        document.getElementById('product-name').innerText = product.name; // Update this line if needed
+                        document.getElementById('product-price').innerText = `$${product.price}`;
+                        document.getElementById('product-description').innerText = product.description; // Ensure this field is in your product data
+                        document.getElementById('product-image').src =
+                            `/storage/images/${product.images}`; // Use appropriate path for images
+
+                        // Show the modal
+                        document.getElementById('Modal_variant').style.display = 'block';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching product:', error);
+                    alert('An error occurred while fetching the product.');
+                });
+        }
+
+        // Hide modal when clicking on close button
+        document.querySelectorAll('.js-hide-modal1').forEach(button => {
+            button.addEventListener('click', () => {
+                document.getElementById('Modal_variant').style.display = 'none';
+            });
+        });
+    </script>
 @endsection

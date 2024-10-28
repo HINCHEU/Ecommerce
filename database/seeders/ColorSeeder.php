@@ -20,6 +20,7 @@ class ColorSeeder extends Seeder
             ['color' => 'blue'],
             ['color' => 'green'],
             ['color' => 'grey'],
+            ['color' => 'black'],
         ];
 
         // Insert each color into the database

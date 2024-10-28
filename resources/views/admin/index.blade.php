@@ -22,12 +22,12 @@
                 </div>
                 <!-- /preload -->
                 <!-- section-menu-left -->
-              @include('admin/aside')
+                @include('admin/aside')
                 <!-- /section-menu-left -->
                 <!-- section-content-right -->
                 <div class="section-content-right">
                     <!-- header-dashboard -->
-                  @include('admin/header')
+                    @include('admin/header')
                     <!-- /header-dashboard -->
                     <!-- main-content -->
                     @yield('main_content')
@@ -40,15 +40,15 @@
         <!-- /#page -->
     </div>
     <!-- /#wrapper -->
-
+    
     <!-- Javascript -->
-    <script src="{{asset('admin/js/jquery.min.js')}}"></script>
-    <script src="{{asset('admin/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('admin/js/bootstrap-select.min.js')}}"></script>
-    <script src="{{asset('admin/js/zoom.js')}}"></script>
-    <script src="{{asset('admin/js/apexcharts/apexcharts.js')}}"></script>
-    <script src="{{asset('admin/js/apexcharts/line-chart-1.js')}}"></script>
-    <script src="{{asset('admin/js/apexcharts/line-chart-2.js')}}"></script>
+    <script src="{{ asset('admin/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('admin/js/zoom.js') }}"></script>
+    <script src="{{ asset('admin/js/apexcharts/apexcharts.js') }}"></script>
+    <script src="{{ asset('admin/js/apexcharts/line-chart-1.js') }}"></script>
+    <script src="{{ asset('admin/js/apexcharts/line-chart-2.js') }}"></script>
     <script src="{{ asset('admin/js/apexcharts/line-chart-3.js') }}"></script>
     <script src="{{ asset('admin/js/apexcharts/line-chart-4.js') }}"></script>
     <script src="{{ asset('admin/js/apexcharts/line-chart-5.js') }}"></script>
