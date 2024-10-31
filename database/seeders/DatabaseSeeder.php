@@ -20,10 +20,11 @@ class DatabaseSeeder extends Seeder
         
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
-        $this->call(ProductVariantSeeder::class);
-        $this->call(ImageSeeder::class);
         $this->call(SizeSeeder::class);
         $this->call(ColorSeeder::class);
+        $this->call(ProductVariantSeeder::class);
+        $this->call(ImageSeeder::class);
+        
 
         User::factory()->create([
             'name' => 'Test User',

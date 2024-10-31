@@ -16,8 +16,8 @@ class ProductVariantSeeder extends Seeder
     {
         // List of sizes to add
         $product_variants = [
-            ['price' => '15', 'quanity' => '5', 'product_id' => '1'],
-           ['price' => '15', 'quanity' => '5', 'product_id' => '2']
+            ['price' => '15', 'quanity' => '5', 'product_id' => '1','color_id' => '1', 'size_id' => '1'],
+           ['price' => '15', 'quanity' => '5', 'product_id' => '2', 'color_id' => '2', 'size_id' => '2']
 
         ];
 

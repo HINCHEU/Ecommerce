@@ -72,6 +72,11 @@
                             </a>
                         </li>
                         <li class="sub-menu-item">
+                            <a href="{{ url('/add_product_variant') }}" class="">
+                                <div class="text">Add Product Variant</div>
+                            </a>
+                        </li>
+                        <li class="sub-menu-item">
                             <a href="{{ url('/product_list') }}" class="">
                                 <div class="text">Product List</div>
                             </a>

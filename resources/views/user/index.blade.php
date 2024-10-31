@@ -166,7 +166,7 @@
     </div> --}}
 
 
-    <div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="Modal_variant">
+    {{-- <div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="Modal_variant">
         <div class="overlay-modal1 js-hide-modal1"></div>
         <div class="container">
             <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
@@ -219,10 +219,7 @@
                         </div>
                     </div>
 
-                    {{-- <h4> class="mtext-105 cl2 js-name-detail p-b-14" id="product-name">Product Name</h4>
-                        <span class="mtext-106 cl2" id="product-price">Price</span>
-                        <p class="stext-102 cl3 p-t-23" id="product-description">Description</p> --}}
-
+                   
 
                     <div class="col-md-6 col-lg-5 p-b-30">
                         <div class="p-r-50 p-t-5 p-lr-0-lg">
@@ -239,7 +236,6 @@
 
                             </p>
 
-                            <!--  -->
                             <div class="p-t-33">
                                 <div class="flex-w flex-r-m p-b-10">
                                     <div class="size-203 flex-c-m respon6">
@@ -302,7 +298,7 @@
                                 </div>
                             </div>
 
-                            <!--  -->
+                           
                             <div class="flex-w flex-m p-l-100 p-t-40 respon7">
                                 <div class="flex-m bor9 p-r-10 m-r-11">
                                     <a href="#"
@@ -337,7 +333,58 @@
 
 
 
+    </div> --}}
+
+    <!-- Add an ID to your modal for easier manipulation -->
+    {{-- <div id="productModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Price:</strong> $<span id="productPrice"></span></p>
+                    <p><strong>Size:</strong> <span id="productSize"></span></p>
+                    <p><strong>Color:</strong> <span id="productColor"></span></p>
+                    <p><strong>Quantity:</strong> <span id="productQuantity"></span></p>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    <div id="productModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="productTitle"></h1> <!-- Changed to H1 -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Color</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productVariants"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
+
+
 
 
     <!-- Slider -->
@@ -397,15 +444,13 @@
                 <div class="item-slick1" style="background-image: url(user/images/slide-03.jpg);">
                     <div class="container h-full">
                         <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                            <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft"
-                                data-delay="0">
+                            <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft" data-delay="0">
                                 <span class="ltext-101 cl2 respon2">
                                     Men Collection 2018
                                 </span>
                             </div>
 
-                            <div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight"
-                                data-delay="800">
+                            <div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight" data-delay="800">
                                 <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
                                     New arrivals
                                 </h2>
@@ -812,7 +857,7 @@
             </div> --}}
 
             <div class="row isotope-grid">
-                @foreach ($product as $index => $item)
+                {{-- @foreach ($product as $index => $item)
                     <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
                         <!-- Block2 -->
                         <div class="block2">
@@ -821,7 +866,7 @@
                                     style="width: 350px; height: 400px; object-fit: cover">
 
                                 <a href="javascript:void(0);" id="product_variant"
-                                    onclick="showProductModal({{ $item->id }})"
+                                    onclick="{{ $item->id }}"
                                     class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
                                     Quick View
                                 </a>
@@ -849,7 +894,44 @@
                             </div>
                         </div>
                     </div>
+                @endforeach --}}
+                @foreach ($product as $index => $item)
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                        <div class="block2">
+                            <div class="block2-pic hov-img0">
+                                <img src="{{ asset('storage/images/' . $item->image) }}" alt="IMG-PRODUCT"
+                                    style="width: 350px; height: 400px; object-fit: cover">
+
+                                <a href="javascript:void(0);" data-id="{{ $item->id }}"
+                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 quick-view-btn">
+                                    Quick View
+                                </a>
+                            </div>
+
+                            <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt-child1 flex-col-l ">
+                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                        {{ $item->product_name }}
+                                    </a>
+
+                                    <span class="stext-105 cl3">
+                                        ${{ $item->price }}
+                                    </span>
+                                </div>
+
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                            src="user/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                            src="user/images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
+
             </div>
             <!-- Load more -->
             <div class="flex-c-m flex-w w-full p-t-45">
@@ -859,39 +941,126 @@
             </div>
         </div>
     </section>
+
     <script>
-        function showProductModal(productId) {
-            // Fetch product data from the server
-            fetch(`/product/${productId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const product = data.product;
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const quickViewButtons = document.querySelectorAll('.quick-view-btn');
 
-                        // Set the product data in the modal
-                        document.getElementById('product-id').innerText = "Product ID: " + product.id;
-                        document.getElementById('product-name').innerText = product.name; // Update this line if needed
-                        document.getElementById('product-price').innerText = `$${product.price}`;
-                        document.getElementById('product-description').innerText = product.description; // Ensure this field is in your product data
-                        document.getElementById('product-image').src =
-                            `/storage/images/${product.images}`; // Use appropriate path for images
+        //     quickViewButtons.forEach(button => {
+        //         button.addEventListener('click', function() {
+        //             const productId = this.getAttribute('data-id');
 
-                        // Show the modal
-                        document.getElementById('Modal_variant').style.display = 'block';
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching product:', error);
-                    alert('An error occurred while fetching the product.');
+        //             // Make an AJAX request to fetch the product data
+        //             fetch(`/product/${productId}`)
+        //                 .then(response => response.json())
+        //                 .then(data => {
+        //                     if (data.success) {
+        //                         // Populate the modal with product data
+        //                         const product = data.product[
+        //                             0]; // Access the first item in the array
+        //                         document.getElementById('productTitle').textContent = product
+        //                             .name;
+        //                         document.getElementById('productPrice').textContent = product
+        //                             .price;
+        //                         document.getElementById('productSize').textContent = product
+        //                             .size;
+        //                         document.getElementById('productColor').textContent = product
+        //                             .color;
+        //                         document.getElementById('productQuantity').textContent = product
+        //                             .quanity;
+
+        //                         // Show the modal
+        //                         $('#productModal').modal('show');
+        //                     } else {
+        //                         alert('Product not found');
+        //                     }
+        //                 })
+        //                 .catch(error => console.error('Error:', error));
+        //         });
+        //     });
+        // });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const quickViewButtons = document.querySelectorAll('.quick-view-btn');
+
+        //     quickViewButtons.forEach(button => {
+        //         button.addEventListener('click', function() {
+        //             const productId = this.getAttribute('data-id');
+
+        //             // Make an AJAX request to fetch the product data
+        //             fetch(`/product/${productId}`)
+        //                 .then(response => response.json())
+        //                 .then(data => {
+        //                     if (data.success) {
+        //                         // Populate the modal title with the product name
+        //                         const product = data.product[0];
+        //                         document.getElementById('productTitle').textContent = product
+        //                             .name;
+
+        //                         // Clear the previous variants if any
+        //                         const variantsContainer = document.getElementById(
+        //                             'productVariants');
+        //                         variantsContainer.innerHTML = '';
+
+        //                         // Loop through each variant and add it to the table
+        //                         data.product.forEach(variant => {
+        //                             const row = document.createElement('tr');
+        //                             row.innerHTML = `
+    //                         <td>${variant.size}</td>
+    //                         <td>${variant.color}</td>
+    //                         <td>$${variant.price}</td>
+    //                         <td>${variant.quanity}</td>
+    //                     `;
+        //                             variantsContainer.appendChild(row);
+        //                         });
+
+        //                         // Show the modal
+        //                         $('#productModal').modal('show');
+        //                     } else {
+        //                         alert('Product not found');
+        //                     }
+        //                 })
+        //                 .catch(error => console.error('Error:', error));
+        //         });
+        //     });
+        // });
+        document.addEventListener('DOMContentLoaded', function() {
+            const quickViewButtons = document.querySelectorAll('.quick-view-btn');
+
+            quickViewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-id');
+
+                    fetch(`/product/${productId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Set the product name as <h1> in the modal title
+                                const product = data.product[0];
+                                document.getElementById('productTitle').textContent = product
+                                    .name;
+
+                                const variantsContainer = document.getElementById(
+                                    'productVariants');
+                                variantsContainer.innerHTML = '';
+
+                                data.product.forEach(variant => {
+                                    const row = document.createElement('tr');
+                                    row.innerHTML = `
+                                <td>${variant.size}</td>
+                                <td>${variant.color}</td>
+                                <td>$${variant.price}</td>
+                                <td>${variant.quanity}</td>
+                            `;
+                                    variantsContainer.appendChild(row);
+                                });
+
+                                $('#productModal').modal('show');
+                            } else {
+                                alert('Product not found');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
                 });
-        }
-
-        // Hide modal when clicking on close button
-        document.querySelectorAll('.js-hide-modal1').forEach(button => {
-            button.addEventListener('click', () => {
-                document.getElementById('Modal_variant').style.display = 'none';
             });
         });
     </script>

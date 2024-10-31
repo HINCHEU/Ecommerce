@@ -23,7 +23,7 @@ class ProductController extends Controller
         $product = DB::table('products')
             ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
             ->leftJoin('product_variants', 'products.id', '=', 'product_variants.product_id')
-            ->leftJoin('images', 'product_variants.id', '=', 'images.productVariant_id')
+            ->leftJoin('images', 'products.id', '=', 'images.product_id')
             ->select(
                 DB::raw('COALESCE(MAX(images.image), "default_image.png") as image'), // Get the first image or a default
                 'products.id as id',
@@ -47,28 +47,18 @@ class ProductController extends Controller
     }
 
     // ProductController.php
-    public function getProduct($id)
+    public function getProduct($id, Request $request)
     {
-
         $product = DB::table('products')
-        ->select(
-            'products.id',
-            'products.name',
-            DB::raw('GROUP_CONCAT(sizes.size) AS size'),
-            DB::raw('GROUP_CONCAT(colors.color) AS color'),
-            DB::raw('GROUP_CONCAT(images.image) AS images')
-        )
-        ->leftJoin('product_variants', 'products.id', '=', 'product_variants.product_id')
-        ->leftJoin('images', 'product_variants.id', '=', 'images.productVariant_id')
-        ->leftJoin('colors', 'product_variants.color_id', '=', 'colors.id')
-        ->leftJoin('sizes', 'product_variants.size_id', '=', 'sizes.id')
-        ->groupBy('products.id', 'products.name')
-        ->orderBy('products.id')
-        ->orderBy('products.name')
+        ->join('product_variants', 'product_variants.product_id', '=', 'products.id')
+        ->join('colors', 'product_variants.color_id', '=', 'colors.id')
+        ->join('sizes', 'product_variants.size_id', '=', 'sizes.id')
+        ->select('products.id', 'products.name', 'product_variants.quanity', 'sizes.size', 'colors.color', 'product_variants.price')
+        ->where('products.id', $id)
+        ->groupBy('products.id', 'products.name', 'product_variants.quanity', 'sizes.size', 'colors.color', 'product_variants.price')
         ->get();
 
-
-        if ($product) {
+        if ($product) { 
             return response()->json([
                 'success' => true,
                 'product' => $product
@@ -80,6 +70,7 @@ class ProductController extends Controller
             ]);
         }
     }
+
 
 
 
@@ -95,65 +86,65 @@ class ProductController extends Controller
         $product->category_id = $request->input('category');
         $product->save();
 
-        $lastProductId = DB::table('products')->latest('id')->value('id');
-        $product_variants = new ProductVariant();
-        $product_variants->product_id = $lastProductId;
-        // $product_variants->color_id = $request->input('color');
-        // $product_variants->size_id = $request->input('size');
-        $product_variants->price = $request->input('price');
-        $product_variants->quanity = $request->input('quantity');
-        $product_variants->save();
-        $lastProductVariantId = DB::table('product_variants')->latest('id')->value('id');
+        // $lastProductId = DB::table('products')->latest('id')->value('id');
+        // $product_variants = new ProductVariant();
+        // $product_variants->product_id = $lastProductId;
+        // // $product_variants->color_id = $request->input('color');
+        // // $product_variants->size_id = $request->input('size');
+        // $product_variants->price = $request->input('price');
+        // $product_variants->quanity = $request->input('quantity');
+        // $product_variants->save();
+        // $lastProductVariantId = DB::table('product_variants')->latest('id')->value('id');
 
 
-        $filenames = ['filename1', 'filename2', 'filename3'];
-        // Loop through each filename and handle the upload
-        foreach ($filenames as $filename) {
-            // Check if the file exists in the request
-            if ($request->hasFile($filename)) {
-                // Get the file
-                $file = $request->file($filename);
+        // $filenames = ['filename1', 'filename2', 'filename3'];
+        // // Loop through each filename and handle the upload
+        // foreach ($filenames as $filename) {
+        //     // Check if the file exists in the request
+        //     if ($request->hasFile($filename)) {
+        //         // Get the file
+        //         $file = $request->file($filename);
 
-                // Store the file in the public/images directory
-                $path = $file->store('images', 'public');
-                $filename = basename($path);
-                // Create a new Image record
-                $image = new Image(); // Make sure to import the Image model at the top
-                $image->productVariant_id = $lastProductVariantId; // Associate with the last product variant
-                $image->image = $filename; // Save the path to the database
-                $image->save(); // Save the record
-            }
-        }
+        //         // Store the file in the public/images directory
+        //         $path = $file->store('images', 'public');
+        //         $filename = basename($path);
+        //         // Create a new Image record
+        //         $image = new Image(); // Make sure to import the Image model at the top
+        //         $image->productVariant_id = $lastProductVariantId; // Associate with the last product variant
+        //         $image->image = $filename; // Save the path to the database
+        //         $image->save(); // Save the record
+        //     }
+        // }
 
-        
 
-        $request->validate([
-            'sizes' => 'required|array',
-            'sizes.*' => 'exists:sizes,id', // Assuming 'sizes' table has an 'id'
-        ]);
 
-        // Loop through each checked size and create a new product variant
-        foreach ($request->sizes as $sizeId) {
-            SizeProductVariant::create([
-                'size_id' => $sizeId,
-                'productVariant_id' => $lastProductVariantId, // Adjust the column name as necessary
-                // Add other necessary fields here
-            ]);
-        }
+        // $request->validate([
+        //     'sizes' => 'required|array',
+        //     'sizes.*' => 'exists:sizes,id', // Assuming 'sizes' table has an 'id'
+        // ]);
 
-        $request->validate([
-            'colors' => 'required|array',
-            'colors.*' => 'exists:colors,id', // Assuming 'colors' table has an 'id'
-        ]);
+        // // Loop through each checked size and create a new product variant
+        // foreach ($request->sizes as $sizeId) {
+        //     SizeProductVariant::create([
+        //         'size_id' => $sizeId,
+        //         'productVariant_id' => $lastProductVariantId, // Adjust the column name as necessary
+        //         // Add other necessary fields here
+        //     ]);
+        // }
 
-        // Loop through each checked size and create a new product variant
-        foreach ($request->colors as $colorId) {
-            ColorProductVariant::create([
-                'color_id' => $colorId,
-                'productVariant_id' => $lastProductVariantId, // Adjust the column name as necessary
-                // Add other necessary fields here
-            ]);
-        }
+        // $request->validate([
+        //     'colors' => 'required|array',
+        //     'colors.*' => 'exists:colors,id', // Assuming 'colors' table has an 'id'
+        // ]);
+
+        // // Loop through each checked size and create a new product variant
+        // foreach ($request->colors as $colorId) {
+        //     ColorProductVariant::create([
+        //         'color_id' => $colorId,
+        //         'productVariant_id' => $lastProductVariantId, // Adjust the column name as necessary
+        //         // Add other necessary fields here
+        //     ]);
+        // }
 
 
         return redirect('/add_product');
