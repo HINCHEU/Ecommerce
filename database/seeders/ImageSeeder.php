@@ -19,6 +19,9 @@ class ImageSeeder extends Seeder
             ['image' => 'cheu.png',
                 'product_id' => '1',
             ],
+            ['image' => 'cheu.png',
+                'product_id' => '2',
+            ],
         ];
 
         // Insert each color into the database

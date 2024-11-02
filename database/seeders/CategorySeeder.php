@@ -16,11 +16,11 @@ class CategorySeeder extends Seeder
     {
         // List of sizes to add
         $categories = [
-            ['name' => 'man','description' => 'this is man decription'],
-            ['name' => 'woman','description' => 'this is wonman decription'],
+            ['name' => 'men','description' => 'this is man decription'],
+            ['name' => 'women','description' => 'this is wonman decription'],
 
             ['name' => 'shirt','description' => 'clothes for man','parent_id'=>'1'],
-            
+
             ['name' => 'dress','description' => 'clothes for woman','parent_id'=>'2'],
         ];
 
