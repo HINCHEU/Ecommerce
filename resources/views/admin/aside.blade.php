@@ -76,6 +76,11 @@
                                 <div class="text">Product List</div>
                             </a>
                         </li>
+                        <li class="sub-menu-item">
+                            <a href="{{ url('/product_variant') }}" class="">
+                                <div class="text">Product Variant</div>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="menu-item has-children">

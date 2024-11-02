@@ -16,8 +16,8 @@ class ProductSeeder extends Seeder
     {
         // List of sizes to add
         $products = [
-            ['name' => 'T-shirt', 'description' => 'comfort shirt',  'category_id' => '3'],
-            ['name' => 'crop top', 'description' => 'tiny shirt', 'category_id' => '4'],
+            ['name' => 'T-shirt', 'description' => 'comfort shirt',  'category_id' => '3','base_price' => '10'],
+            ['name' => 'crop top', 'description' => 'tiny shirt', 'category_id' => '4','base_price' => '20'],
         ];
 
         // Insert each size into the database

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\ProductColor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -17,13 +18,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        
+
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
-        $this->call(ProductVariantSeeder::class);
         $this->call(ImageSeeder::class);
         $this->call(SizeSeeder::class);
         $this->call(ColorSeeder::class);
+        $this->call(ProductColorSeeder::class);
+        $this->call(ProductSizeSeeder::class);
 
         User::factory()->create([
             'name' => 'Test User',

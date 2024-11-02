@@ -16,8 +16,19 @@ class Product extends Model
         'description',
         'category_id',
     ];
-//    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-//    {
-//        return $this->belongsTo(Category::class, 'category_id');
-//    }
+
+    public function productColors()
+    {
+        return $this->hasMany(ProductColor::class);
+    }
+
+    public function productSizes()
+    {
+        return $this->hasMany(ProductSize::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(Image::class); // Assuming your image model is named ProductImage
+    }
+
 }

@@ -98,11 +98,11 @@
                     </div>
                                 <div class="flex items-center justify-between gap20 flex-grow">
                                     <div class="name">
-                                        <a href="product-list.html" class="body-title-2">{{$item->product_name}}</a>
+                                        <a href="product-list.html" class="body-title-2">{{$item->name}}</a>
                                     </div>
                                     <div class="body-text">#2024{{$item->id}}</div>
                                     <div class="body-text">${{$item->price}}</div>
-                                    <div class="body-text">{{$item->quantity}}</div>
+                                    <div class="body-text">10</div>
 
                                     <div class="body-text">{{ $item->category_name }}</div>
 {{--                                    <div>--}}

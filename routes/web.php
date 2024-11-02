@@ -23,13 +23,15 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         return view('admin/main');
     });
 
-    Route::get('/add_product', function () {
+    Route::get('/add_product', [\App\Http\Controllers\ProductController::class, 'show_category'])->name('admin.show_category');
+    Route::get('/product_variant', function () {
 
-        return view('admin/add_product');
+        return view('admin/product_variant');
     });
 
     Route::get('/product_list', [\App\Http\Controllers\ProductController::class, 'index'])->name('admin.show_product');
-    Route::get('/add_product', [\App\Http\Controllers\ProductController::class, 'show'])->name('admin.show');
+    Route::get('/product_variant', [\App\Http\Controllers\ProductController::class, 'show'])->name('admin.show');
+    Route::post('/product_variant', [\App\Http\Controllers\ProductController::class, 'create_detail'])->name('admin.create_detail');
     Route::post('/add_product', [\App\Http\Controllers\ProductController::class, 'create'])->name('admin.create');
 
     Route::get('/category_list', function () {
