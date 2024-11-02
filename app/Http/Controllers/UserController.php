@@ -31,9 +31,6 @@ class UserController extends Controller
             ->groupBy('products.id', 'products.name', 'products.base_price')
             ->get();
 
-//
-
-
         return view('user.index', compact('product'));
     }
 

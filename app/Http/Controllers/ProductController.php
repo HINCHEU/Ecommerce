@@ -104,7 +104,7 @@ class ProductController extends Controller
             return redirect('/product_variant')->with('success', 'Details created successfully.');
         } catch (\Exception $e) {
             // Log the error and redirect back with an error message
-            \Log::error('Error creating details: ' . $e->getMessage());
+            //Log::error('Error creating details: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while creating details.');
         }
     }
