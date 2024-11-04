@@ -21,8 +21,8 @@
                 </ul>
 
                 <div class="w-full">
-                    <div class="header-cart-total w-full p-tb-40">
-                        Total: $75.00
+                    <div class="header-cart-total w-full p-tb-40" id="toatl_cart">
+                        Total: $
                     </div>
 
                     <div class="header-cart-buttons flex-w w-full">
@@ -746,7 +746,7 @@
                 $('#product-modal').hide();
             });
 
-            // Assuming the modal product name is unique for each displayed product
+            // Add to cart functionality
             $('.js-addcart-detail').on('click', function() {
                 // Retrieve product details
                 const productName = $('#product-name').text();
@@ -755,8 +755,7 @@
                 const productQuantity = $('.num-product').val();
                 const productSize = $('#size-select').val();
                 const productColor = $('#color-select').val();
-                const productImage = $('#product-images img').first().attr(
-                    'src'); // Get the first image source
+                const productImage = $('#product-images img').first().attr('src');
 
                 // Create a cart item object
                 const cartItem = {
@@ -768,7 +767,7 @@
                     image: productImage
                 };
 
-                // Retrieve existing cart from sessionStorage or initialize an empty array
+                // Retrieve existing cart or initialize empty array
                 let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
                 // Add new item to cart array
@@ -777,49 +776,97 @@
                 // Save updated cart back to sessionStorage
                 sessionStorage.setItem('cart', JSON.stringify(cart));
 
-                // Update cart icon count
-                updateCartIconCount();
-
-                // Append item to #myCart for immediate UI update
+                // Append item to #myCart
                 const newCartItem = `
-        <li class="header-cart-item flex-w flex-t m-b-12">
-            <div class="header-cart-item-img">
-                <img src="${productImage}" alt="${productName}">
-            </div>
-            <div class="header-cart-item-txt p-t-8">
-                <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                    ${productName}
-                </a>
-                <span class="header-cart-item-info">
-                    ${productQuantity} x $${productPrice.toFixed(2)} - ${productSize} / ${productColor}
-                </span>
-            </div>
-        </li>
-    `;
+            <li class="header-cart-item flex-w flex-t m-b-12">
+                <div class="header-cart-item-img">
+                    <img src="${productImage}" alt="${productName}">
+                </div>
+                <div class="header-cart-item-txt p-t-8">
+                    <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+                        ${productName}
+                    </a>
+                    <span class="header-cart-item-info">
+                        ${productQuantity} x $${productPrice.toFixed(2)} - ${productSize} / ${productColor}
+                    </span>
+                </div>
+            </li>
+        `;
                 $('#myCart').append(newCartItem);
+
+                // Update cart icon count and total
+                updateCartIconCount();
+                updateTotalCart();
 
                 // Success message
                 swal(productName, "is added to cart!", "success");
             });
 
-
-
-
             // Function to update cart icon count
             function updateCartIconCount() {
-                // Retrieve the current cart from sessionStorage
                 const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-                const itemCount = cart.reduce((total, item) => total + parseInt(item.qty), 0); // Sum the quantities
-                $('.js-show-cart').attr('data-notify', itemCount); // Update the cart icon's data-notify attribute
+                const itemCount = cart.reduce((total, item) => total + parseInt(item.qty), 0);
+                $('.js-show-cart').attr('data-notify', itemCount);
             }
 
+            // Function to update cart total
+            function updateTotalCart() {
+                const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
+                const total_cart = cart.reduce((total, item) => {
+                    return total + (parseFloat(item.qty) * parseFloat(item.price));
+                }, 0);
 
+                // Remove existing total if present
+                $('.header-cart-total').remove();
 
-            // Get cart data from sessionStorage
+                // Add the total after the cart items
+                $('#myCart').after(`
+            <div class="header-cart-total w-full p-tb-40">
+                Total: $${total_cart.toFixed(2)}
+            </div>
+        `);
+            }
+
+            // Clear cart functionality
+            $('#clear-cart').on('click', function() {
+                const confirmClear = confirm("Are you sure you want to clear the cart?");
+                if (!confirmClear) return;
+
+                // Clear cart data
+                sessionStorage.removeItem('cart');
+                $('#myCart').empty();
+                $('.header-cart-total').remove();
+
+                // Update displays
+                updateCartIconCount();
+                updateTotalCart();
+
+                swal("Cart Cleared", "All items have been removed from your cart.", "success");
+            });
+
+            // Calculate price based on selected color and size
+            function calculatePrice() {
+                const basePrice = parseFloat($('#product-price').data('base-price')) || 0;
+                const selectedColor = $('#color-select option:selected');
+                const selectedSize = $('#size-select option:selected');
+                const colorPrice = parseFloat(selectedColor.data('addition-price')) || 0;
+                const sizePrice = parseFloat(selectedSize.data('addition-price')) || 0;
+                const totalPrice = basePrice + colorPrice + sizePrice;
+
+                // Update the displayed price
+                $('#product-price').text(`$${totalPrice.toFixed(2)}`);
+                $('#product-price').data('final-price', totalPrice);
+            }
+
+            // Trigger price calculation on dropdown change
+            $('#color-select').on('change', calculatePrice);
+            $('#size-select').on('change', calculatePrice);
+
+            // Initial cart setup
             const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
-            // Iterate through cart items and add each to #myCart
+            // Load existing cart items
             cart.forEach(item => {
                 const cartItemHtml = `
             <li class="header-cart-item flex-w flex-t m-b-12">
@@ -839,47 +886,9 @@
                 $('#myCart').append(cartItemHtml);
             });
 
-
+            // Initialize cart count and total on page load
             updateCartIconCount();
-
-            // Function to clear the cart
-            $('#clear-cart').on('click', function() {
-                // Confirm clear action
-                const confirmClear = confirm("Are you sure you want to clear the cart?");
-                if (!confirmClear) return;
-
-                // Clear cart data from sessionStorage
-                sessionStorage.removeItem('cart');
-
-                // Clear the cart items displayed in #myCart
-                $('#myCart').empty();
-
-                // Reset the cart icon count
-                updateCartIconCount();
-
-                // Optional: Show a success message
-                swal("Cart Cleared", "All items have been removed from your cart.", "success");
-            });
-
-
-            // Calculate price based on selected color and size
-            function calculatePrice() {
-                const basePrice = parseFloat($('#product-price').data('base-price')) || 0;
-                const selectedColor = $('#color-select option:selected');
-                const selectedSize = $('#size-select option:selected');
-                const colorPrice = parseFloat(selectedColor.data('addition-price')) || 0;
-                const sizePrice = parseFloat(selectedSize.data('addition-price')) || 0;
-                const totalPrice = basePrice + colorPrice + sizePrice;
-
-                // Update the displayed price
-                $('#product-price').text(`$${totalPrice.toFixed(2)}`);
-                $('#product-price').data('final-price',
-                    totalPrice); // Store the calculated price in a data attribute
-            }
-
-            // Trigger price calculation on dropdown change
-            $('#color-select').on('change', calculatePrice);
-            $('#size-select').on('change', calculatePrice);
+            updateTotalCart();
         });
     </script>
 @endsection
