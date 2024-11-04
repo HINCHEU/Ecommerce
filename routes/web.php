@@ -118,6 +118,9 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('user/contact');
 });
+Route::get('/shoping_cart', function () {
+    return view('user/shoping_cart');
+});
 
 
 // web.php

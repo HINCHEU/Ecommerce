@@ -39,7 +39,8 @@ class ProductController extends Controller
     }
 
     // ProductController.php
-    public function show_category(){
+    public function show_category()
+    {
         $category = Category::all();
         return view('admin.add_product', compact('category'));
     }
@@ -90,14 +91,14 @@ class ProductController extends Controller
             $product_color = new ProductColor();
             $product_color->product_id = $selectedProduct;
             $product_color->color_id = $request->input('color');
-            $product_color->additional_price = $request->input('additional_price');
+            $product_color->additional_price = $request->input('additional_price_size');
             $product_color->save();
 
             // Create ProductSize record
             $product_size = new ProductSize();
             $product_size->product_id = $selectedProduct;
             $product_size->size_id = $request->input('size');
-            $product_size->additional_price = $request->input('additional_price');
+            $product_size->additional_price = $request->input('additional_price_color');
             $product_size->save();
 
             // Redirect with success message (optional)
@@ -111,8 +112,8 @@ class ProductController extends Controller
 
     public function getProduct($id)
     {
-        $product = Product::with(['productColors.color', 'productSizes.size','images']) // Eager load relationships
-        ->where('id', $id)
+        $product = Product::with(['productColors.color', 'productSizes.size', 'images']) // Eager load relationships
+            ->where('id', $id)
             ->first();
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
@@ -141,7 +142,7 @@ class ProductController extends Controller
 
             // Fetch sizes associated with the product color
             foreach ($product->productSizes as $productSize) {
-                if ($productSize->product_id === $product->id && $productSize->additional_price === $productColor->additional_price) { // Adjust this logic
+                if ($productSize->product_id === $product->id || $productSize->additional_price === $productColor->additional_price) { // Adjust this logic
                     $sizeData = [
                         'size' => $productSize->size->size, // Adjust based on your sizes table structure
                         'addition_price' => $productSize->additional_price,

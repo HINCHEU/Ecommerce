@@ -28,23 +28,23 @@
                         EN
                     </a>
                     @if (auth::user())
-                    <form method="POST" action="{{ route('logout') }}" style="align-content:center;">
-                        @csrf
-                        <a class="flex-c-m trans-04 p-lr-25">
-                            <button type="submit" style="color:#b2b2b2; border: none;">
-                                Log out
-                            </button>
-                        </a>
-                    </form>
+                        <form method="POST" action="{{ route('logout') }}" style="align-content:center;">
+                            @csrf
+                            <a class="flex-c-m trans-04 p-lr-25">
+                                <button type="submit" style="color:#b2b2b2; border: none;">
+                                    Log out
+                                </button>
+                            </a>
+                        </form>
                     @else
-                    <form method="POST" action="{{ route('logout') }}" style="align-content:center;">
-                        @csrf
-                        <a class="flex-c-m trans-04 p-lr-25">
-                            <button type="submit" style="color:#b2b2b2; border: none;">
-                                Sign in
-                            </button>
-                        </a>
-                    </form>
+                        <form method="POST" action="{{ route('logout') }}" style="align-content:center;">
+                            @csrf
+                            <a class="flex-c-m trans-04 p-lr-25">
+                                <button type="submit" style="color:#b2b2b2; border: none;">
+                                    Sign in
+                                </button>
+                            </a>
+                        </form>
                     @endif
 
 
@@ -85,6 +85,9 @@
 
                         <li>
                             <a href="{{ url('/contact') }}">Contact</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/shoping_cart') }}">Shopping Cart</a>
                         </li>
                     </ul>
                 </div>
@@ -226,4 +229,3 @@
 </header>
 
 <!-- Cart -->
-

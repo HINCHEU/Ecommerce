@@ -30,7 +30,8 @@
                     </ul>
                 </div>
                 <!-- form-add-product -->
-                <form class="form-add-product" method="post" action="{{route('admin.create_detail')}}" enctype="multipart/form-data">
+                <form class="form-add-product" method="post" action="{{ route('admin.create_detail') }}"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="wg-box">
                         <fieldset class="name">
@@ -53,10 +54,9 @@
                                         <span class="text-tiny" id="textDisplay1">Drop your images here or select <span
                                                 class="tf-color">click to browse</span></span>
                                         <input type="file" id="file1" name="filename1"
-                                               onchange="previewImage(event, 'preview1', 'textDisplay1')">
+                                            onchange="previewImage(event, 'preview1', 'textDisplay1')">
                                     </label>
-                                    <img id="preview1" src=""
-                                         style="display:none;"/>
+                                    <img id="preview1" src="" style="display:none;" />
                                 </div>
 
                                 <div class="item up-load">
@@ -65,10 +65,9 @@
                                         <span class="text-tiny" id="textDisplay2">Drop your images here or select <span
                                                 class="tf-color">click to browse</span></span>
                                         <input type="file" id="file2" name="filename2"
-                                               onchange="previewImage(event, 'preview2', 'textDisplay2')">
+                                            onchange="previewImage(event, 'preview2', 'textDisplay2')">
                                     </label>
-                                    <img id="preview2" src=""
-                                         style="display:none;"/>
+                                    <img id="preview2" src="" style="display:none;" />
                                 </div>
 
                                 <div class="item up-load">
@@ -76,10 +75,9 @@
                                         <span class="text-tiny" id="textDisplay3">Drop your images here or select <span
                                                 class="tf-color">click to browse</span></span>
                                         <input type="file" id="file3" name="filename3"
-                                               onchange="previewImage(event, 'preview3', 'textDisplay3')">
+                                            onchange="previewImage(event, 'preview3', 'textDisplay3')">
                                     </label>
-                                    <img id="preview3" src=""
-                                         style="display:none;"/>
+                                    <img id="preview3" src="" style="display:none;" />
                                 </div>
 
                             </div>
@@ -88,17 +86,16 @@
                                 certain dimensions. Notice that the product shows all the details
                             </div>
                         </fieldset>
-                        <fieldset class="name">
+                        {{-- <fieldset class="name">
                             <div class="body-title mb-10">Additional Price <span class="tf-color-1">*</span></div>
                             <input class="mb-10" type="text" placeholder="Enter additional price"
-                                   name="additional_price"
-                                   tabindex="0" value="" aria-required="true" required="">
-                        </fieldset>
-{{--                        <fieldset class="name">--}}
-{{--                            <div class="body-title mb-10">Quantity <span class="tf-color-1">*</span></div>--}}
-{{--                            <input class="mb-10" type="text" placeholder="Enter quantity" name="quantity"--}}
-{{--                                   tabindex="0" value="" aria-required="true" required="">--}}
-{{--                        </fieldset>--}}
+                                name="additional_price" tabindex="0" value="" aria-required="true" required="">
+                        </fieldset> --}}
+                        {{--                        <fieldset class="name"> --}}
+                        {{--                            <div class="body-title mb-10">Quantity <span class="tf-color-1">*</span></div> --}}
+                        {{--                            <input class="mb-10" type="text" placeholder="Enter quantity" name="quantity" --}}
+                        {{--                                   tabindex="0" value="" aria-required="true" required=""> --}}
+                        {{--                        </fieldset> --}}
                         <div class="cols gap22">
                             <fieldset class="name">
                                 <div class="body-title mb-10">Add size</div>
@@ -124,10 +121,26 @@
                             </fieldset>
 
                         </div>
+                        <div class="cols gap22">
+                            <fieldset class="name">
+                                <div class="body-title mb-10">Additional Price for size<span class="tf-color-1">*</span>
+                                </div>
+                                <input class="mb-10" type="text" placeholder="Enter additional price"
+                                    name="additional_price_size" tabindex="0" value="" aria-required="true"
+                                    required="">
+                            </fieldset>
+                            <fieldset class="name">
+                                <div class="body-title mb-10">Additional Price for color <span class="tf-color-1">*</span>
+                                </div>
+                                <input class="mb-10" type="text" placeholder="Enter additional price"
+                                    name="additional_price_color" tabindex="0" value="" aria-required="true"
+                                    required="">
+                            </fieldset>
+                        </div>
                         <div class="cols gap10">
                             <button class="tf-button" type="submit">Add product</button>
                             <button class="tf-button style-1" type="submit">Save product</button>
-                            {{--                            <a href="#" class="tf-button style-2 w-full">Schedule</a>--}}
+                            {{--                            <a href="#" class="tf-button style-2 w-full">Schedule</a> --}}
                         </div>
                     </div>
                 </form>
@@ -155,9 +168,9 @@
             if (file) {
                 const reader = new FileReader();
 
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';// Display the image preview
+                    imagePreview.style.display = 'block'; // Display the image preview
                     textDisplay.style.display = 'none'; // Hide the text
                 };
 

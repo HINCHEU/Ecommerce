@@ -713,27 +713,49 @@
                             }
                         });
 
-                        // Populate color and size options with data-addition-price
-                        $('#size-select').empty().append(
-                            '<option value="">Choose an option</option>');
-                        data.color.forEach(function(color) {
-                            color.size.forEach(function(size) {
-                                $('#size-select').append(
-                                    `<option data-addition-price="${size.addition_price}" data-color="${color.color}">${size.size}</option>`
-                                );
-                            });
-                        });
+                        // Populate color and size options with unique values
+                        const uniqueColors = new Set(); // Set to track unique colors
+                        const uniqueSizes = new Set(); // Set to track unique sizes
 
                         $('#color-select').empty().append(
                             '<option value="">Choose an option</option>');
+                        $('#size-select').empty().append(
+                            '<option value="">Choose an option</option>');
+
                         data.color.forEach(function(color) {
-                            $('#color-select').append(
-                                `<option value="${color.color}" data-addition-price="${color.addition_price}">${color.color}</option>`
-                            );
+                            // Add unique colors
+                            if (!uniqueColors.has(color.color)) {
+                                uniqueColors.add(color.color); // Add to Set
+                                $('#color-select').append(
+                                    `<option value="${color.color}" data-addition-price="${color.addition_price}">${color.color}</option>`
+                                );
+                            }
+                            // Add unique sizes within each color
+                            color.size.forEach(function(size) {
+                                if (!uniqueSizes.has(size.size)) {
+                                    uniqueSizes.add(size.size); // Add to Set
+                                    $('#size-select').append(
+                                        `<option data-addition-price="${size.addition_price}" data-color="${color.color}">${size.size}</option>`
+                                    );
+                                }
+                            });
                         });
 
+                        // Disable the "Add to Cart" button initially
+                        $('#add-to-cart-button').prop('disabled', true);
+
+                        // Check selections and enable the button if both are selected
+                        $('#color-select, #size-select').on('change', function() {
+                            const colorSelected = $('#color-select').val();
+                            const sizeSelected = $('#size-select').val();
+                            $('#add-to-cart-button').prop('disabled', !(colorSelected &&
+                                sizeSelected));
+                        });
+
+
+
                         // Show the modal
-                        calculatePrice();
+                        updateTotalCart();
                         $('#product-modal').show();
                     },
                     error: function() {
@@ -749,13 +771,25 @@
 
             // Add to cart functionality
             $('.js-addcart-detail').on('click', function() {
+                const productSize = $('#size-select').val();
+                const productColor = $('#color-select').val();
+
+                // Check if both color and size are selected
+                if (!productSize || !productColor) {
+                    swal({
+                        title: "Selection Required",
+                        text: "Please select both a color and a size before adding to the cart.",
+                        icon: "warning",
+                        button: "Got it!",
+                    });
+                    return; // Exit the function if validation fails
+                }
+
                 // Retrieve product details
                 const productName = $('#product-name').text();
                 const productPrice = $('#product-price').data(
                     'final-price'); // Use the calculated final price
                 const productQuantity = $('.num-product').val();
-                const productSize = $('#size-select').val();
-                const productColor = $('#color-select').val();
                 const productImage = $('#product-images img').first().attr('src');
 
                 // Create a cart item object
@@ -779,20 +813,20 @@
 
                 // Append item to #myCart
                 const newCartItem = `
-            <li class="header-cart-item flex-w flex-t m-b-12">
-                <div class="header-cart-item-img">
-                    <img src="${productImage}" alt="${productName}">
-                </div>
-                <div class="header-cart-item-txt p-t-8">
-                    <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                        ${productName}
-                    </a>
-                    <span class="header-cart-item-info">
-                        ${productQuantity} x $${productPrice.toFixed(2)} - ${productSize} / ${productColor}
-                    </span>
-                </div>
-            </li>
-        `;
+        <li class="header-cart-item flex-w flex-t m-b-12">
+            <div class="header-cart-item-img">
+                <img src="${productImage}" alt="${productName}">
+            </div>
+            <div class="header-cart-item-txt p-t-8">
+                <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+                    ${productName}
+                </a>
+                <span class="header-cart-item-info">
+                    ${productQuantity} x $${productPrice.toFixed(2)} - ${productSize} / ${productColor}
+                </span>
+            </div>
+        </li>
+    `;
                 $('#myCart').append(newCartItem);
 
                 // Update cart icon count and total
@@ -802,6 +836,7 @@
                 // Success message
                 swal(productName, "is added to cart!", "success");
             });
+
 
             // Function to update cart icon count
             function updateCartIconCount() {
