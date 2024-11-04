@@ -733,6 +733,7 @@
                         });
 
                         // Show the modal
+                        calculatePrice();
                         $('#product-modal').show();
                     },
                     error: function() {
