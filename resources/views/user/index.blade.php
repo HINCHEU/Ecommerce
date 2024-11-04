@@ -90,7 +90,7 @@
 
                                     <div class="size-204 respon6-next">
                                         <div class="rs1-select2 bor8 bg0">
-                                            <select class="js-select2" id="size-select">
+                                            <select class="js-select2" id="size-select" required>
                                                 <option>Choose an option</option>
                                                 <!-- Sizes will be dynamically inserted here -->
                                             </select>
@@ -106,7 +106,7 @@
 
                                     <div class="size-204 respon6-next">
                                         <div class="rs1-select2 bor8 bg0">
-                                            <select class="js-select2" id="color-select">
+                                            <select class="js-select2" id="color-select" required>
                                                 <option>Choose an option</option>
                                                 <!-- Colors will be dynamically inserted here -->
                                             </select>
@@ -817,15 +817,8 @@
                     return total + (parseFloat(item.qty) * parseFloat(item.price));
                 }, 0);
 
-                // Remove existing total if present
-                $('.header-cart-total').remove();
-
-                // Add the total after the cart items
-                $('#myCart').after(`
-            <div class="header-cart-total w-full p-tb-40">
-                Total: $${total_cart.toFixed(2)}
-            </div>
-        `);
+                // Update the total display
+                $('#toatl_cart').html(`Total: $${total_cart.toFixed(2)}`);
             }
 
             // Clear cart functionality
@@ -836,7 +829,7 @@
                 // Clear cart data
                 sessionStorage.removeItem('cart');
                 $('#myCart').empty();
-                $('.header-cart-total').remove();
+                $('#toatl_cart').html(`Total: $ 0`);
 
                 // Update displays
                 updateCartIconCount();
