@@ -57,6 +57,7 @@ class ProductController extends Controller
         $product->description = $request->input('description');
         $product->category_id = $request->input('category');
         $product->base_price = $request->input('base_price');
+        $product->discount = $request->input('discount');
         $product->save();
 
 

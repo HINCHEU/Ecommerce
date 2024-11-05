@@ -63,30 +63,31 @@
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
                     <ul class="main-menu">
-                        <li class="active-menu">
+                        <li class="{{ Request::is('/') ? 'active-menu' : '' }}">
                             <a href="{{ url('/') }}">Home</a>
                         </li>
 
-                        <li>
+                        <li class="{{ Request::is('product') ? 'active-menu' : '' }}">
                             <a href="{{ url('/product') }}">Shop</a>
                         </li>
 
-                        <li class="label1" data-label1="hot">
-                            <a href="shoping-cart.html">Features</a>
+                        <li class="label1 {{ Request::is('shoping-cart') ? 'active-menu' : '' }}" data-label1="hot">
+                            <a href="{{ url('/shoping-cart') }}">Features</a>
                         </li>
 
-                        <li>
+                        <li class="{{ Request::is('blog') ? 'active-menu' : '' }}">
                             <a href="{{ url('/blog') }}">Blog</a>
                         </li>
 
-                        <li>
+                        <li class="{{ Request::is('about') ? 'active-menu' : '' }}">
                             <a href="{{ url('/about') }}">About</a>
                         </li>
 
-                        <li>
+                        <li class="{{ Request::is('contact') ? 'active-menu' : '' }}">
                             <a href="{{ url('/contact') }}">Contact</a>
                         </li>
-                        <li>
+
+                        <li class="{{ Request::is('shoping_cart') ? 'active-menu' : '' }}">
                             <a href="{{ url('/shoping_cart') }}">Shopping Cart</a>
                         </li>
                     </ul>

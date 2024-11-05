@@ -58,13 +58,19 @@
                         <fieldset class="name">
                             <div class="body-title mb-10">Base Price <span class="tf-color-1">*</span></div>
                             <input class="mb-10" type="text" placeholder="Enter base price" name="base_price"
-                                   tabindex="0" value="" aria-required="true" required="">
+                                tabindex="0" value="" aria-required="true" required="">
                         </fieldset>
                         <fieldset class="description">
                             <div class="body-title mb-10">Description <span class="tf-color-1">*</span></div>
                             <textarea class="mb-10" name="description" placeholder="Description" tabindex="0" rows="30" aria-required="true"
                                 required="" name="description"></textarea>
                             <div class="text-tiny">Do not exceed 100 characters when entering the product name.</div>
+                        </fieldset>
+                        <fieldset class="name">
+                            <div class="body-title mb-10">Discount in Percentage
+                            </div>
+                            <input class="mb-10" type="text" placeholder="Enter discount %" name="discount"
+                                tabindex="0" value="" aria-required="true" required="">
                         </fieldset>
                     </div>
                     <button class="tf-button" type="submit">Add product</button>

@@ -140,7 +140,6 @@
                         <div class="cols gap10">
                             <button class="tf-button" type="submit">Add product</button>
                             <button class="tf-button style-1" type="submit">Save product</button>
-                            {{--                            <a href="#" class="tf-button style-2 w-full">Schedule</a> --}}
                         </div>
                     </div>
                 </form>
