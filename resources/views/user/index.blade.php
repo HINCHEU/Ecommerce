@@ -744,9 +744,6 @@
                             });
                         });
 
-                        // Setup validation elements
-                        setupValidation();
-
                         // Show the modal and update cart
                         updateTotalCart();
                         $('#product-modal').show();
@@ -774,7 +771,6 @@
                 if (!colorSelected || !sizeSelected) {
                     // Build error message based on what's missing
                     const missingSelections = [];
-                    console.log(missingSelections);
                     if (!colorSelected) missingSelections.push("color");
                     if (!sizeSelected) missingSelections.push("size");
 
@@ -806,31 +802,6 @@
                 @else
                     window.location = "/login";
                 @endif
-            })
-
-            // Setup validation display elements
-            function setupValidation() {
-                if (!$('#color-validation').length) {
-                    $('#color-select').after(
-                        '<div id="color-validation" class="text-danger" style="display: none;"></div>');
-                }
-                if (!$('#size-validation').length) {
-                    $('#size-select').after(
-                        '<div id="size-validation" class="text-danger" style="display: none;"></div>');
-                }
-            }
-
-            // Handle color and size selection changes
-            $('#color-select, #size-select').on('change', function() {
-                const colorSelected = $('#color-select').val();
-                const sizeSelected = $('#size-select').val();
-
-                // Update Add to Cart button state
-                $('#add-to-cart-button').prop('disabled', !(colorSelected && sizeSelected));
-
-                // Show/hide validation messages
-
-                calculatePrice();
             });
 
             // Add to cart function
@@ -879,22 +850,8 @@
                 }, 0);
                 $('#toatl_cart').html(`Total: $${total_cart.toFixed(2)}`);
             }
-
-            // Calculate price function
-            function calculatePrice() {
-                const basePrice = parseFloat($('#product-price').data('base-price')) || 0;
-                const selectedColor = $('#color-select option:selected');
-                const selectedSize = $('#size-select option:selected');
-                const colorPrice = parseFloat(selectedColor.data('addition-price')) || 0;
-                const sizePrice = parseFloat(selectedSize.data('addition-price')) || 0;
-                const totalPrice = basePrice + colorPrice + sizePrice;
-
-                $('#product-price').text(`$${totalPrice.toFixed(2)}`);
-                $('#product-price').data('final-price', totalPrice);
-            }
         });
     </script>
-
     <style>
         .is-invalid {
             border-color: #dc3545;
