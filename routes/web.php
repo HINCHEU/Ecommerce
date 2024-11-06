@@ -101,7 +101,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 // });
 //========================================================
 Route::get('/', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
-//Route::get('/{id}', [\App\Http\Controllers\UserController::class, 'product_detail'])->name('user.detail');
+
 
 Route::get('/product', function () {
     return view('user/product');
@@ -125,3 +125,4 @@ Route::get('/shoping_cart', function () {
 
 // web.php
 Route::get('/product/{id}', [ProductController::class, 'getProduct'])->name('product.get');
+Route::post('/shoping_cart', [\App\Http\Controllers\Shopping_cartController::class, 'addToCart'])->name('admin.addToCart');

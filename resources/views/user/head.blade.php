@@ -31,6 +31,9 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="user/css/util.css">
 	<link rel="stylesheet" type="text/css" href="user/css/main.css">
+    <script>
+        var userId = {{ Auth::id() }};
+    </script>
 
 
 

@@ -10,48 +10,25 @@ class Shopping_cartController extends Controller
 {
     public function addToCart(Request $request)
     {
-        // Updated validation to match your table names
-        $validatedData = $request->validate([
+        $request->validate([
             'product_id' => 'required|exists:products,id',
-            'productsize_id' => 'required|exists:productsize,id', // Changed from productsizes to productsize
-            'productcolor_id' => 'required|exists:productcolor,id', // Changed from productcolors to productcolor
-            'quantity' => 'required|integer|min:1',
+            'product_color_id' => 'required|exists:productcolor,id',
+            'product_size_id' => 'required|exists:productsize,id',
+            'quantity' => 'required|integer|min:1', // Ensure at least one item
         ]);
 
-        try {
-            // Check if item already exists in cart
-            $existingCart = shopping_cart::where([
-                'user_id' => Auth::id(),
-                'product_id' => $validatedData['product_id'],
-                'productsize_id' => $validatedData['productsize_id'],
-                'productcolor_id' => $validatedData['productcolor_id'],
-            ])->first();
+        // Get the user ID of the authenticated user
+        $userId = Auth::id();
 
-            if ($existingCart) {
-                // Update quantity if item exists
-                $existingCart->quantity += $validatedData['quantity'];
-                $existingCart->save();
-            } else {
-                // Create new cart item
-                $cart = new shopping_cart();
-                $cart->user_id = Auth::id();
-                $cart->product_id = $validatedData['product_id'];
-                $cart->productsize_id = $validatedData['productsize_id'];
-                $cart->productcolor_id = $validatedData['productcolor_id'];
-                $cart->quantity = $validatedData['quantity'];
-                $cart->save();
-            }
+        // Create a new entry in the shopping cart
+        $cartItem = shopping_cart::create([
+            'user_id' => $userId,
+            'product_id' => $request->product_id,
+            'productcolor_id' => $request->product_color_id,
+            'productsize_id' => $request->product_size_id,
+            'quanity' => $request->quantity, // Check the spelling if it should be 'quantity'
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Product added to cart successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to add product to cart',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json(['message' => 'Item added to cart successfully!', 'cart_item' => $cartItem], 201);
     }
 }

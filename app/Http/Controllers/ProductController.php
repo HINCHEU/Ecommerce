@@ -138,6 +138,7 @@ class ProductController extends Controller
             $colorData = [
                 'color' => $productColor->color->color, // Adjust based on your colors table structure
                 'addition_price' => $productColor->additional_price,
+                'productcolor_id' => $productColor->color->id,
                 'size' => [],
             ];
 
@@ -147,6 +148,7 @@ class ProductController extends Controller
                     $sizeData = [
                         'size' => $productSize->size->size, // Adjust based on your sizes table structure
                         'addition_price' => $productSize->additional_price,
+                        'productsize_id' => $productSize->size->id
                     ];
                     $colorData['size'][] = $sizeData; // Add size to the color data
                 }

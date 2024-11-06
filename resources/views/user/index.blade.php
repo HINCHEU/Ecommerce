@@ -1,5 +1,6 @@
 @extends('user.layout_user')
 @section('main_content')
+
     <!-- Your Cart -->
     <div class="wrap-header-cart js-panel-cart">
         <div class="s-full js-hide-cart"></div>
@@ -130,8 +131,8 @@
                                             </div>
                                         </div>
 
-                                        <button
-                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                        <button id="add-to-cart-button" data-product-id=""
+                                            class="js-addcart-detail flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
                                             Add to cart
                                         </button>
                                     </div>
@@ -670,7 +671,7 @@
                             .text(`$${data.base_price.toFixed(2)}`);
                         $('#product-description').text(data.description ||
                             "No description available");
-
+                        $('#add-to-cart-button').data('product-id', productId);
                         // Clear images and destroy Slick if initialized
                         const imagesContainer = $('#product-images');
                         if (imagesContainer.hasClass('slick-initialized')) {
@@ -717,29 +718,26 @@
                         const uniqueColors = new Set(); // Set to track unique colors
                         const uniqueSizes = new Set(); // Set to track unique sizes
 
-                        $('#color-select').empty().append(
-                            '<option value="">Choose an option</option>');
-                        $('#size-select').empty().append(
-                            '<option value="">Choose an option</option>');
+                        $('#color-select').empty().append('<option value="">Choose an option</option>');
+                        $('#size-select').empty().append('<option value="">Choose an option</option>');
 
                         data.color.forEach(function(color) {
                             // Add unique colors
                             if (!uniqueColors.has(color.color)) {
                                 uniqueColors.add(color.color); // Add to Set
                                 $('#color-select').append(
-                                    `<option value="${color.color}" data-addition-price="${color.addition_price}">${color.color}</option>`
+                                    `<option value="${color.color}" data-addition-price="${color.addition_price}" data-productcolor-id="${color.productcolor_id}">${color.color}</option>`
                                 );
                             }
+
                             // Add unique sizes within each color
                             color.size.forEach(function(size) {
-                                if (!uniqueSizes.has(size.size)) {
-                                    uniqueSizes.add(size.size); // Add to Set
-                                    $('#size-select').append(
-                                        `<option data-addition-price="${size.addition_price}" data-color="${color.color}">${size.size}</option>`
-                                    );
-                                }
+                                $('#size-select').append(
+                                    `<option value="${size.size}" data-addition-price="${size.addition_price}" data-productsize-id="${size.productsize_id}">${size.size}</option>`
+                                );
                             });
                         });
+
 
                         // Disable the "Add to Cart" button initially
                         $('#add-to-cart-button').prop('disabled', true);
@@ -771,81 +769,77 @@
 
             // Add to cart functionality
             $('.js-addcart-detail').on('click', function() {
-                const productSize = $('#size-select').val();
-                const productColor = $('#color-select').val();
+                $(document).ready(function() {
+                    // Add to cart functionality
+                    $('.js-addcart-detail').on('click', function() {
+                        const productId = $(this).data('product-id'); // Get product ID
+                        const productColorId = $('#color-select').find(':selected').data('productcolor-id'); // Get selected color ID
+                        const productSizeId = $('#size-select').find(':selected').data('productsize-id'); // Get selected size ID
+                        const quantity = 1; // Set default quantity or get from an input field
 
-                // Check if both color and size are selected
-                if (!productSize || !productColor) {
-                    swal({
-                        title: "Selection Required",
-                        text: "Please select both a color and a size before adding to the cart.",
-                        icon: "warning",
-                        button: "Got it!",
+                        // Log the values to debug
+                        console.log('Product ID:', productId);
+                        console.log('Color ID:', productColorId);
+                        console.log('Size ID:', productSizeId);
+
+                        // Perform AJAX request to add item to cart
+                        addToCart(productId, productColorId, productSizeId, quantity)
+                            .then(response => {
+                                swal(response.message, "", "success");
+                            })
+                            .catch(error => {
+                                handleError(error);
+                            });
                     });
-                    return; // Exit the function if validation fails
-                }
 
-                // Retrieve product details
-                const productName = $('#product-name').text();
-                const productPrice = $('#product-price').data(
-                    'final-price'); // Use the calculated final price
-                const productQuantity = $('.num-product').val();
-                const productImage = $('#product-images img').first().attr('src');
+                    // Function to add product to the cart
+                    function addToCart(productId, productColorId, productSizeId, quantity) {
+                        return new Promise((resolve, reject) => {
+                            $.ajax({
+                                url: '/shoping_cart', // Ensure this matches your route
+                                method: 'POST',
+                                data: {
+                                    product_id: productId,
+                                    product_color_id: productColorId,
+                                    product_size_id: productSizeId,
+                                    quantity: quantity,
+                                    _token: '{{ csrf_token() }}' // Include CSRF token if you're using Blade templates
+                                },
+                                success: function(response) {
+                                    resolve(response); // Resolve the promise on success
+                                },
+                                error: function(xhr) {
+                                    reject(xhr); // Reject the promise on error
+                                }
+                            });
+                        });
+                    }
 
-                // Create a cart item object
-                const cartItem = {
-                    name: productName,
-                    price: productPrice,
-                    qty: productQuantity,
-                    size: productSize,
-                    color: productColor,
-                    image: productImage
-                };
+                    // Function to handle errors
+                    function handleError(xhr) {
+                        console.log(xhr);
+                        if (xhr.status === 422) {
+                            // Handle validation errors
+                            const errors = xhr.responseJSON.errors;
+                            let errorMessage = '';
+                            for (let key in errors) {
+                                errorMessage += errors[key].join(', ') + '\n';
+                            }
+                            swal("Error", errorMessage, "error");
+                        } else {
+                            swal("Error", "An error occurred while adding the product to the cart.", "error");
+                        }
+                    }
+                });
 
-                // Retrieve existing cart or initialize empty array
-                let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-
-                // Add new item to cart array
-                cart.push(cartItem);
-
-                // Save updated cart back to sessionStorage
-                sessionStorage.setItem('cart', JSON.stringify(cart));
-
-                // Append item to #myCart
-                const newCartItem = `
-        <li class="header-cart-item flex-w flex-t m-b-12">
-            <div class="header-cart-item-img">
-                <img src="${productImage}" alt="${productName}">
-            </div>
-            <div class="header-cart-item-txt p-t-8">
-                <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                    ${productName}
-                </a>
-                <span class="header-cart-item-info">
-                    ${productQuantity} x $${productPrice.toFixed(2)} - ${productSize} / ${productColor}
-                </span>
-            </div>
-        </li>
-    `;
-                $('#myCart').append(newCartItem);
-
-                // Update cart icon count and total
-                updateCartIconCount();
-                updateTotalCart();
-
-                // Success message
-                swal(productName, "is added to cart!", "success");
             });
 
 
-            // Function to update cart icon count
-            function updateCartIconCount() {
-                const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-                const itemCount = cart.reduce((total, item) => total + parseInt(item.qty), 0);
-                $('.js-show-cart').attr('data-notify', itemCount);
-            }
 
-            // Function to update cart total
+
+
+
+            // // Function to update cart total
             function updateTotalCart() {
                 const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
@@ -856,23 +850,8 @@
                 // Update the total display
                 $('#toatl_cart').html(`Total: $${total_cart.toFixed(2)}`);
             }
+            //
 
-            // Clear cart functionality
-            $('#clear-cart').on('click', function() {
-                const confirmClear = confirm("Are you sure you want to clear the cart?");
-                if (!confirmClear) return;
-
-                // Clear cart data
-                sessionStorage.removeItem('cart');
-                $('#myCart').empty();
-                $('#toatl_cart').html(`Total: $ 0`);
-
-                // Update displays
-                updateCartIconCount();
-                updateTotalCart();
-
-                swal("Cart Cleared", "All items have been removed from your cart.", "success");
-            });
 
             // Calculate price based on selected color and size
             function calculatePrice() {
@@ -892,32 +871,6 @@
             $('#color-select').on('change', calculatePrice);
             $('#size-select').on('change', calculatePrice);
 
-            // Initial cart setup
-            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-
-            // Load existing cart items
-            cart.forEach(item => {
-                const cartItemHtml = `
-            <li class="header-cart-item flex-w flex-t m-b-12">
-                <div class="header-cart-item-img">
-                    <img src="${item.image}" alt="${item.name}">
-                </div>
-                <div class="header-cart-item-txt p-t-8">
-                    <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                        ${item.name}
-                    </a>
-                    <span class="header-cart-item-info">
-                        ${item.qty} x $${item.price} - ${item.size} / ${item.color}
-                    </span>
-                </div>
-            </li>
-        `;
-                $('#myCart').append(cartItemHtml);
-            });
-
-            // Initialize cart count and total on page load
-            updateCartIconCount();
-            updateTotalCart();
         });
     </script>
 @endsection
