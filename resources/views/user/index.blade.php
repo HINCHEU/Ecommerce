@@ -1,6 +1,5 @@
 @extends('user.layout_user')
 @section('main_content')
-
     <!-- Your Cart -->
     <div class="wrap-header-cart js-panel-cart">
         <div class="s-full js-hide-cart"></div>
@@ -654,6 +653,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Show modal and fetch product details
             $('.js-show-modal1').on('click', function(e) {
                 e.preventDefault();
                 const productId = $(this).data('product-id');
@@ -672,6 +672,7 @@
                         $('#product-description').text(data.description ||
                             "No description available");
                         $('#add-to-cart-button').data('product-id', productId);
+
                         // Clear images and destroy Slick if initialized
                         const imagesContainer = $('#product-images');
                         if (imagesContainer.hasClass('slick-initialized')) {
@@ -682,16 +683,18 @@
                         // Append new images and initialize Slick slider
                         data.images.forEach(function(image) {
                             imagesContainer.append(`
-                        <div class="item-slick3" data-thumb="${image}">
-                            <div class="wrap-pic-w pos-relative">
-                                <img src="${image}" alt="IMG-PRODUCT">
-                                <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="${image}">
-                                    <i class="fa fa-expand"></i>
-                                </a>
-                            </div>
-                        </div>
-                    `);
+                                <div class="item-slick3" data-thumb="${image}">
+                                    <div class="wrap-pic-w pos-relative">
+                                        <img src="${image}" alt="IMG-PRODUCT">
+                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="${image}">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            `);
                         });
+
+                        // Initialize Slick slider
                         imagesContainer.slick({
                             slidesToShow: 1,
                             slidesToScroll: 1,
@@ -714,50 +717,42 @@
                             }
                         });
 
-                        // Populate color and size options with unique values
-                        const uniqueColors = new Set(); // Set to track unique colors
-                        const uniqueSizes = new Set(); // Set to track unique sizes
+                        // Populate color and size options
+                        const uniqueColors = new Set();
+                        const uniqueSizes = new Set();
 
-                        $('#color-select').empty().append('<option value="">Choose an option</option>');
-                        $('#size-select').empty().append('<option value="">Choose an option</option>');
+                        $('#color-select').empty().append(
+                            '<option value="">Choose a color</option>');
+                        $('#size-select').empty().append(
+                            '<option value="">Choose a size</option>');
 
                         data.color.forEach(function(color) {
-                            // Add unique colors
                             if (!uniqueColors.has(color.color)) {
-                                uniqueColors.add(color.color); // Add to Set
+                                uniqueColors.add(color.color);
                                 $('#color-select').append(
                                     `<option value="${color.color}" data-addition-price="${color.addition_price}" data-productcolor-id="${color.productcolor_id}">${color.color}</option>`
                                 );
                             }
 
-                            // Add unique sizes within each color
                             color.size.forEach(function(size) {
-                                $('#size-select').append(
-                                    `<option value="${size.size}" data-addition-price="${size.addition_price}" data-productsize-id="${size.productsize_id}">${size.size}</option>`
-                                );
+                                if (!uniqueSizes.has(size.size)) {
+                                    uniqueSizes.add(size.size);
+                                    $('#size-select').append(
+                                        `<option value="${size.size}" data-addition-price="${size.addition_price}" data-productsize-id="${size.productsize_id}">${size.size}</option>`
+                                    );
+                                }
                             });
                         });
 
+                        // Setup validation elements
+                        setupValidation();
 
-                        // Disable the "Add to Cart" button initially
-                        $('#add-to-cart-button').prop('disabled', true);
-
-                        // Check selections and enable the button if both are selected
-                        $('#color-select, #size-select').on('change', function() {
-                            const colorSelected = $('#color-select').val();
-                            const sizeSelected = $('#size-select').val();
-                            $('#add-to-cart-button').prop('disabled', !(colorSelected &&
-                                sizeSelected));
-                        });
-
-
-
-                        // Show the modal
+                        // Show the modal and update cart
                         updateTotalCart();
                         $('#product-modal').show();
                     },
                     error: function() {
-                        alert('Product not found');
+                        swal("Error", "Product not found", "error");
                     }
                 });
             });
@@ -767,93 +762,125 @@
                 $('#product-modal').hide();
             });
 
-            // Add to cart functionality
-            $('.js-addcart-detail').on('click', function() {
-                $(document).ready(function() {
-                    // Add to cart functionality
-                    $('.js-addcart-detail').on('click', function() {
-                        const productId = $(this).data('product-id'); // Get product ID
-                        const productColorId = $('#color-select').find(':selected').data('productcolor-id'); // Get selected color ID
-                        const productSizeId = $('#size-select').find(':selected').data('productsize-id'); // Get selected size ID
-                        const quantity = 1; // Set default quantity or get from an input field
+            // Add to cart button click handler
+            $('.js-addcart-detail, #add-to-cart-button').on('click', function(e) {
+                e.preventDefault(); // Prevent default form submission
 
-                        // Log the values to debug
-                        console.log('Product ID:', productId);
-                        console.log('Color ID:', productColorId);
-                        console.log('Size ID:', productSizeId);
+                // Get the selected values
+                const colorSelected = $('#color-select').val();
+                const sizeSelected = $('#size-select').val();
 
-                        // Perform AJAX request to add item to cart
-                        addToCart(productId, productColorId, productSizeId, quantity)
-                            .then(response => {
-                                swal(response.message, "", "success");
-                            })
-                            .catch(error => {
-                                handleError(error);
-                            });
+                // Check if either color or size is not selected
+                if (!colorSelected || !sizeSelected) {
+                    // Build error message based on what's missing
+                    const missingSelections = [];
+                    console.log(missingSelections);
+                    if (!colorSelected) missingSelections.push("color");
+                    if (!sizeSelected) missingSelections.push("size");
+
+                    // Show the warning popup
+                    swal({
+                        title: "Required Selections",
+                        text: `Please select a ${missingSelections.join(" and ")}`,
+                        icon: "warning",
+                        button: "OK",
                     });
+                    return false; // Prevent further execution
+                }
 
-                    // Function to add product to the cart
-                    function addToCart(productId, productColorId, productSizeId, quantity) {
-                        return new Promise((resolve, reject) => {
-                            $.ajax({
-                                url: '/shoping_cart', // Ensure this matches your route
-                                method: 'POST',
-                                data: {
-                                    product_id: productId,
-                                    product_color_id: productColorId,
-                                    product_size_id: productSizeId,
-                                    quantity: quantity,
-                                    _token: '{{ csrf_token() }}' // Include CSRF token if you're using Blade templates
-                                },
-                                success: function(response) {
-                                    resolve(response); // Resolve the promise on success
-                                },
-                                error: function(xhr) {
-                                    reject(xhr); // Reject the promise on error
-                                }
-                            });
+                // If we get here, both color and size are selected
+                @if (Auth::user())
+                    const productId = $(this).data('product-id');
+                    const productColorId = $('#color-select').find(':selected').data('productcolor-id');
+                    const productSizeId = $('#size-select').find(':selected').data('productsize-id');
+                    const quantity = 1;
+
+                    // Add to cart
+                    addToCart(productId, productColorId, productSizeId, quantity)
+                        .then(response => {
+                            swal(response.message, "", "success");
+                        })
+                        .catch(error => {
+                            handleError(error);
                         });
-                    }
+                @else
+                    window.location = "/login";
+                @endif
+            })
 
-                    // Function to handle errors
-                    function handleError(xhr) {
-                        console.log(xhr);
-                        if (xhr.status === 422) {
-                            // Handle validation errors
-                            const errors = xhr.responseJSON.errors;
-                            let errorMessage = '';
-                            for (let key in errors) {
-                                errorMessage += errors[key].join(', ') + '\n';
-                            }
-                            swal("Error", errorMessage, "error");
-                        } else {
-                            swal("Error", "An error occurred while adding the product to the cart.", "error");
-                        }
-                    }
-                });
+            // Setup validation display elements
+            function setupValidation() {
+                if (!$('#color-validation').length) {
+                    $('#color-select').after(
+                        '<div id="color-validation" class="text-danger" style="display: none;"></div>');
+                }
+                if (!$('#size-validation').length) {
+                    $('#size-select').after(
+                        '<div id="size-validation" class="text-danger" style="display: none;"></div>');
+                }
+            }
 
+            // Handle color and size selection changes
+            $('#color-select, #size-select').on('change', function() {
+                const colorSelected = $('#color-select').val();
+                const sizeSelected = $('#size-select').val();
+
+                // Update Add to Cart button state
+                $('#add-to-cart-button').prop('disabled', !(colorSelected && sizeSelected));
+
+                // Show/hide validation messages
+
+                calculatePrice();
             });
 
+            // Add to cart function
+            function addToCart(productId, productColorId, productSizeId, quantity) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: '/shoping_cart',
+                        method: 'POST',
+                        data: {
+                            product_id: productId,
+                            product_color_id: productColorId,
+                            product_size_id: productSizeId,
+                            quantity: quantity,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr) {
+                            reject(xhr);
+                        }
+                    });
+                });
+            }
 
+            // Error handler function
+            function handleError(xhr) {
+                console.log(xhr);
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    let errorMessage = '';
+                    for (let key in errors) {
+                        errorMessage += errors[key].join(', ') + '\n';
+                    }
+                    swal("Error", errorMessage, "error");
+                } else {
+                    swal("Error", "An error occurred while adding the product to the cart.", "error");
+                }
+            }
 
-
-
-
-            // // Function to update cart total
+            // Update cart total function
             function updateTotalCart() {
                 const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-
                 const total_cart = cart.reduce((total, item) => {
                     return total + (parseFloat(item.qty) * parseFloat(item.price));
                 }, 0);
-
-                // Update the total display
                 $('#toatl_cart').html(`Total: $${total_cart.toFixed(2)}`);
             }
-            //
 
-
-            // Calculate price based on selected color and size
+            // Calculate price function
             function calculatePrice() {
                 const basePrice = parseFloat($('#product-price').data('base-price')) || 0;
                 const selectedColor = $('#color-select option:selected');
@@ -862,15 +889,21 @@
                 const sizePrice = parseFloat(selectedSize.data('addition-price')) || 0;
                 const totalPrice = basePrice + colorPrice + sizePrice;
 
-                // Update the displayed price
                 $('#product-price').text(`$${totalPrice.toFixed(2)}`);
                 $('#product-price').data('final-price', totalPrice);
             }
-
-            // Trigger price calculation on dropdown change
-            $('#color-select').on('change', calculatePrice);
-            $('#size-select').on('change', calculatePrice);
-
         });
     </script>
+
+    <style>
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
 @endsection
