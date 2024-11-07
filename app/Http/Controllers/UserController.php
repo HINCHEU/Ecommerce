@@ -20,18 +20,18 @@ class UserController extends Controller
 
     public function product()
     {
-//        $product = DB::table('products')
-//            ->leftJoin('images', 'images.product_id', '=', 'products.id')
-//            ->join('categories', 'categories.id', '=', 'products.category_id')
-//            ->select(
-//                'categories.name as category_name',
-//                'products.id as id',
-//                'products.name as name',
-//                'products.base_price as price',
-//                DB::raw('MIN(images.image) as image') // Get the first image
-//            )
-//            ->groupBy('products.id', 'products.name', 'products.base_price','categories.name')
-//            ->get();
+        //        $product = DB::table('products')
+        //            ->leftJoin('images', 'images.product_id', '=', 'products.id')
+        //            ->join('categories', 'categories.id', '=', 'products.category_id')
+        //            ->select(
+        //                'categories.name as category_name',
+        //                'products.id as id',
+        //                'products.name as name',
+        //                'products.base_price as price',
+        //                DB::raw('MIN(images.image) as image') // Get the first image
+        //            )
+        //            ->groupBy('products.id', 'products.name', 'products.base_price','categories.name')
+        //            ->get();
         $product = DB::table('products')
             ->leftJoin('images', 'images.product_id', '=', 'products.id')
             ->leftJoin('categories as child_categories', 'child_categories.id', '=', 'products.category_id')
@@ -40,6 +40,7 @@ class UserController extends Controller
                 DB::raw('COALESCE(parent_categories.name, child_categories.name) as category_name'), // Choose parent if exists
                 'products.id as id',
                 'products.name as name',
+                DB::raw('MAX(products.discount) as discount'),  // Apply aggregate function
                 'products.base_price as price',
                 DB::raw('MIN(images.image) as image') // Get the first image
             )
@@ -47,10 +48,9 @@ class UserController extends Controller
             ->get();
 
 
-//
+        //
 
 
         return view('user.index', compact('product'));
     }
-
 }

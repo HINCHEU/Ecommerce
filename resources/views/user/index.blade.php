@@ -1,6 +1,5 @@
 @extends('user.layout_user')
 @section('main_content')
-    
     <!-- Modal -->
     <div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="product-modal" style="display:none;">
         <div class="overlay-modal1 js-hide-modal1"></div>
@@ -80,7 +79,7 @@
                                             </div>
 
                                             <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                name="num-product" value="1">
+                                                name="num-product" value="1" min="1">
 
                                             <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
@@ -125,12 +124,8 @@
             </div>
         </div>
     </div>
-
-
-
-
     <!-- Slider -->
-    <section class="section-slide">ca
+    <section class="section-slide">
         <div class="wrap-slick1">
             <div class="slick1">
                 <div class="item-slick1" style="background-image: url(user/images/slide-01.jpg);">
@@ -212,8 +207,6 @@
             </div>
         </div>
     </section>
-
-
     <!-- Banner -->
     <div class="sec-banner bg0 p-t-80 p-b-50">
         <div class="container">
@@ -561,8 +554,7 @@
 
             <div class="row isotope-grid">
                 @foreach ($product as $item)
-                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{ $item->category_name }}">
-                        <!-- Block2 -->
+                    {{-- <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{ $item->category_name }}">
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="{{ asset('storage/images/' . $item->image) }}" alt="IMG-PRODUCT"
@@ -571,6 +563,46 @@
                                 <a href="javascript:void(0);"
                                     class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
                                     data-product-id="{{ $item->id }}"> <!-- Include product ID -->
+                                    Quick View
+                                </a>
+                            </div>
+
+                            <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt-child1 flex-col-l ">
+                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                        {{ $item->name }}
+                                    </a>
+
+                                    <span class="stext-105 cl3">
+                                        ${{ $item->price }}
+                                    </span>
+                                </div>
+
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                            src="user/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                            src="user/images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> --}}
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{ $item->category_name }}">
+                        <div class="block2">
+                            <div class="block2-pic hov-img0 position-relative">
+                                @if ($item->discount > 0)
+                                    <div class="discount-badge">
+                                        {{ $item->discount }}% OFF
+                                    </div>
+                                @endif
+                                <img src="{{ asset('storage/images/' . $item->image) }}" alt="IMG-PRODUCT"
+                                    style="width: 350px; height: 400px; object-fit: cover">
+
+                                <a href="javascript:void(0);"
+                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
+                                    data-product-id="{{ $item->id }}">
                                     Quick View
                                 </a>
                             </div>
@@ -608,7 +640,7 @@
         </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     <style>
         .is-invalid {
             border-color: #dc3545;

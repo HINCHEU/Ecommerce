@@ -31,6 +31,7 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="user/css/util.css">
 	<link rel="stylesheet" type="text/css" href="user/css/main.css">
+	<link rel="stylesheet" type="text/css" href="user/css/badge.css">
     <script>
         var userId = {{ Auth::id() }};
     </script>

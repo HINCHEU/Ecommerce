@@ -177,11 +177,9 @@
             }
         });
     }
+
     $(document).ready(function() {
         fetchShoppingCart();
-        ///fectch data from shopping cart
-
-
         // Show modal and fetch product details
         $('.js-show-modal1').on('click', function(e) {
             e.preventDefault();
@@ -273,8 +271,6 @@
                         });
                     });
 
-                    // Show the modal and update cart
-                    updateTotalCart();
                     $('#product-modal').show();
                 },
                 error: function() {
@@ -286,6 +282,25 @@
         // Close modal on overlay click
         $('.js-hide-modal1').on('click', function() {
             $('#product-modal').hide();
+        });
+        $('.btn-num-product-up').off('click').on('click', function() {
+            let input = $(this).siblings('.num-product');
+            input.val(parseInt(input.val()) + 1);
+        });
+
+        $('.btn-num-product-down').off('click').on('click', function() {
+            let input = $(this).siblings('.num-product');
+            let value = parseInt(input.val());
+            if (value > 1) {
+                input.val(value - 1);
+            }
+        });
+
+        // Update quantity when input changes
+        $('.num-product').on('change', function() {
+            if ($(this).val() < 1) {
+                $(this).val(1);
+            }
         });
 
         // Add to cart button click handler
@@ -318,11 +333,13 @@
                 const productId = $(this).data('product-id');
                 const productColorId = $('#color-select').find(':selected').data('productcolor-id');
                 const productSizeId = $('#size-select').find(':selected').data('productsize-id');
-                const quantity = 1;
+                //const quantity = 1;
+                const quantity = $('.num-product').val(); // Get the quantity from the input
 
                 // Add to cart
                 addToCart(productId, productColorId, productSizeId, quantity)
                     .then(response => {
+                        $('.num-product').val(1);
                         swal(response.message, "", "success");
                     })
                     .catch(error => {
@@ -370,15 +387,6 @@
             } else {
                 swal("Error", "An error occurred while adding the product to the cart.", "error");
             }
-        }
-
-        // Update cart total function
-        function updateTotalCart() {
-            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-            const total_cart = cart.reduce((total, item) => {
-                return total + (parseFloat(item.qty) * parseFloat(item.price));
-            }, 0);
-            $('#toatl_cart').html(`Total: $${total_cart.toFixed(2)}`);
         }
     });
 </script>
