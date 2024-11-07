@@ -126,3 +126,4 @@ Route::get('/shoping_cart', function () {
 Route::get('/product/{id}', [ProductController::class, 'getProduct'])->name('product.get');
 Route::post('/shoping_cart', [\App\Http\Controllers\Shopping_cartController::class, 'addToCart'])->name('shpping_cart.addToCart');
 Route::get('/show_shopping_cart', [\App\Http\Controllers\Shopping_cartController::class, 'show'])->name('shpping_cart.show');
+Route::get('/deleteAllProduct', [\App\Http\Controllers\Shopping_cartController::class, 'delete'])->name('shpping_cart.delete');

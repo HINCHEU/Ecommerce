@@ -71,4 +71,14 @@ class Shopping_cartController extends Controller
 
         return response()->json(['cart' => $cart]);
     }
+    public function delete()
+    {
+        $userId = Auth::id();
+        try {
+            shopping_cart::where('user_id', $userId)->delete();
+            return response()->json(['response' => 'success']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete shopping cart: ' . $e->getMessage()], 500);
+        }
+    }
 }

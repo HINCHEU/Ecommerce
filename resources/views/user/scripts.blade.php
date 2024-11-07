@@ -101,29 +101,49 @@
 <!--===============================================================================================-->
 <script src="user/js/main.js"></script>
 <script>
-    $(document).ready(function() {
-        fetchShoppingCart();
-        ///fectch data from shopping cart
-        function fetchShoppingCart() {
-            $.ajax({
-                url: "http://127.0.0.1:8000/show_shopping_cart",
-                method: "GET",
-                dataType: "json",
-                success: function(data) {
-                    console.log("Shopping Cart Data:", data);
-                    console.log(data.cart.length);
-                    // Set the data-notify attribute to the number of products
-                    $('#shopingCartIcon').attr('data-notify', data.cart.length);
+    function deleteAllProduct() {
+        $.ajax({
+            url: "http://127.0.0.1:8000/deleteAllProduct",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                if (data.response === 'success') {
+                    // Show success message using SweetAlert
+                    swal("Success", "Your cart has been cleared.", "success");
 
-                    // Clear the existing cart items
-                    $('#myCart').empty();
-                    let totalPrice = 0;
-                    // Loop through each item in the cart and append to #myCart
-                    data.cart.forEach(function(item) {
-                        let itemTotal = item.quanity * (item.color_additional_price + item
-                            .size_additional_price + item.base_price);
-                        totalPrice += itemTotal;
-                        let cartItemHtml = `
+                    // Optionally, you can refresh the cart display or redirect
+                    fetchShoppingCart(); // Refresh the cart
+                } else {
+                    swal("Error", "Failed to clear the cart.", "error");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("There was a problem with the AJAX request:", error);
+            }
+        });
+
+    }
+
+    function fetchShoppingCart() {
+        $.ajax({
+            url: "http://127.0.0.1:8000/show_shopping_cart",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                console.log("Shopping Cart Data:", data);
+                console.log(data.cart.length);
+                // Set the data-notify attribute to the number of products
+                $('#shopingCartIcon').attr('data-notify', data.cart.length);
+
+                // Clear the existing cart items
+                $('#myCart').empty();
+                let totalPrice = 0;
+                // Loop through each item in the cart and append to #myCart
+                data.cart.forEach(function(item) {
+                    let itemTotal = item.quanity * (item.color_additional_price + item
+                        .size_additional_price + item.base_price);
+                    totalPrice += itemTotal;
+                    let cartItemHtml = `
                                 <li class="header-cart-item flex-w flex-t m-b-12">
                                     <div class="header-cart-item-img">
                                         <img src="storage/images/${item.product_image}" alt="IMG">
@@ -141,22 +161,26 @@
                                     </div>
                                 </li>
                             `;
-                        // Append the generated HTML to #myCart
-                        $('#myCart').append(cartItemHtml);
-                    });
-                    console.log("total price is " + totalPrice);
-                    // Update total cart display
-                    $('#toatl_cart').html(`
+                    // Append the generated HTML to #myCart
+                    $('#myCart').append(cartItemHtml);
+                });
+                console.log("total price is " + totalPrice);
+                // Update total cart display
+                $('#toatl_cart').html(`
                         <div class="header-cart-total w-full p-tb-40">
                             Total: $${totalPrice.toFixed(2)}
                         </div>
                     `);
-                },
-                error: function(xhr, status, error) {
-                    console.error("There was a problem with the AJAX request:", error);
-                }
-            });
-        }
+            },
+            error: function(xhr, status, error) {
+                console.error("There was a problem with the AJAX request:", error);
+            }
+        });
+    }
+    $(document).ready(function() {
+        fetchShoppingCart();
+        ///fectch data from shopping cart
+
 
         // Show modal and fetch product details
         $('.js-show-modal1').on('click', function(e) {
