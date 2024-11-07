@@ -49,7 +49,7 @@ class Shopping_cartController extends Controller
     {
         $userId = Auth::id();
 
-        // Retrieve cart items with product, color, and size details using joins
+        // Retrieve cart items with product, color, size, and one image per product
         $cart = DB::table('shopping_carts as sc')
             ->join('products as p', 'sc.product_id', '=', 'p.id')
             ->join('productcolor as pc', 'sc.productcolor_id', '=', 'pc.id')
@@ -59,11 +59,13 @@ class Shopping_cartController extends Controller
             ->where('sc.user_id', $userId)
             ->select([
                 'p.name as product_name',
+                'p.base_price as base_price',
                 'c.color as color_name',
                 'pc.additional_price as color_additional_price',
                 's.size as size_name',
                 'ps.additional_price as size_additional_price',
-                'sc.quanity'
+                'sc.quanity',
+                DB::raw('(SELECT image FROM images WHERE product_id = p.id LIMIT 1) as product_image')
             ])
             ->get();
 
