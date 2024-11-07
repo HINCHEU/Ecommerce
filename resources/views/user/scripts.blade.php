@@ -166,7 +166,7 @@
                 });
                 console.log("total price is " + totalPrice);
                 // Update total cart display
-                $('#toatl_cart').html(`
+                $('#total_price_cart').html(`
                         <div class="header-cart-total w-full p-tb-40">
                             Total: $${totalPrice.toFixed(2)}
                         </div>
@@ -180,6 +180,7 @@
 
     $(document).ready(function() {
         fetchShoppingCart();
+
         // Show modal and fetch product details
         $('.js-show-modal1').on('click', function(e) {
             e.preventDefault();
@@ -210,15 +211,15 @@
                     // Append new images and initialize Slick slider
                     data.images.forEach(function(image) {
                         imagesContainer.append(`
-                            <div class="item-slick3" data-thumb="${image}">
-                                <div class="wrap-pic-w pos-relative">
-                                    <img src="${image}" alt="IMG-PRODUCT">
-                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="${image}">
-                                        <i class="fa fa-expand"></i>
-                                    </a>
-                                </div>
+                        <div class="item-slick3" data-thumb="${image}">
+                            <div class="wrap-pic-w pos-relative">
+                                <img src="${image}" alt="IMG-PRODUCT">
+                                <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="${image}">
+                                    <i class="fa fa-expand"></i>
+                                </a>
                             </div>
-                        `);
+                        </div>
+                    `);
                     });
 
                     // Initialize Slick slider
@@ -283,6 +284,8 @@
         $('.js-hide-modal1').on('click', function() {
             $('#product-modal').hide();
         });
+
+        // Increase/decrease quantity
         $('.btn-num-product-up').off('click').on('click', function() {
             let input = $(this).siblings('.num-product');
             input.val(parseInt(input.val()) + 1);
@@ -303,40 +306,49 @@
             }
         });
 
+        // Calculate and update price based on color and size selection
+        function calculatePrice() {
+            const basePrice = parseFloat($('#product-price').data('base-price'));
+            const colorPrice = parseFloat($('#color-select').find(':selected').data('addition-price')) || 0;
+            const sizePrice = parseFloat($('#size-select').find(':selected').data('addition-price')) || 0;
+
+            const totalPrice = basePrice + colorPrice + sizePrice;
+            $('#product-price').text(`$${totalPrice.toFixed(2)}`);
+        }
+
+        // Trigger price calculation when color or size is changed
+        $('#color-select, #size-select').on('change', calculatePrice);
+
         // Add to cart button click handler
         $('.js-addcart-detail, #add-to-cart-button').on('click', function(e) {
-            e.preventDefault(); // Prevent default form submission
+            e.preventDefault();
 
-            // Get the selected values
+            // Get selected values
             const colorSelected = $('#color-select').val();
             const sizeSelected = $('#size-select').val();
 
-            // Check if either color or size is not selected
+            // Check if both color and size are selected
             if (!colorSelected || !sizeSelected) {
-                // Build error message based on what's missing
                 const missingSelections = [];
                 if (!colorSelected) missingSelections.push("color");
                 if (!sizeSelected) missingSelections.push("size");
 
-                // Show the warning popup
                 swal({
                     title: "Required Selections",
                     text: `Please select a ${missingSelections.join(" and ")}`,
                     icon: "warning",
                     button: "OK",
                 });
-                return false; // Prevent further execution
+                return false;
             }
 
-            // If we get here, both color and size are selected
+            // If both selections are made
             @if (Auth::user())
                 const productId = $(this).data('product-id');
                 const productColorId = $('#color-select').find(':selected').data('productcolor-id');
                 const productSizeId = $('#size-select').find(':selected').data('productsize-id');
-                //const quantity = 1;
-                const quantity = $('.num-product').val(); // Get the quantity from the input
+                const quantity = $('.num-product').val();
 
-                // Add to cart
                 addToCart(productId, productColorId, productSizeId, quantity)
                     .then(response => {
                         $('.num-product').val(1);
@@ -388,5 +400,6 @@
                 swal("Error", "An error occurred while adding the product to the cart.", "error");
             }
         }
+
     });
 </script>

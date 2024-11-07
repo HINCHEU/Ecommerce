@@ -20,7 +20,7 @@
 
 
     @include('user/scripts')
-
+    @yield('new_js')
 </body>
 
 </html>

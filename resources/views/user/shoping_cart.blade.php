@@ -7,63 +7,19 @@
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <div class="wrap-table-shopping-cart">
                             <table class="table-shopping-cart">
-                                <tr class="table_head">
-                                    <th class="column-1">Product</th>
-                                    <th class="column-2"></th>
-                                    <th class="column-3">Price</th>
-                                    <th class="column-4">Quantity</th>
-                                    <th class="column-5">Total</th>
-                                </tr>
-
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img src="images/item-cart-04.jpg" alt="IMG">
-                                        </div>
-                                    </td>
-                                    <td class="column-2">Fresh Strawberries</td>
-                                    <td class="column-3">$ 36.00</td>
-                                    <td class="column-4">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-minus"></i>
-                                            </div>
-
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                name="num-product1" value="1">
-
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="column-5">$ 36.00</td>
-                                </tr>
-
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img src="images/item-cart-05.jpg" alt="IMG">
-                                        </div>
-                                    </td>
-                                    <td class="column-2">Lightweight Jacket</td>
-                                    <td class="column-3">$ 16.00</td>
-                                    <td class="column-4">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-minus"></i>
-                                            </div>
-
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                name="num-product2" value="1">
-
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="column-5">$ 16.00</td>
-                                </tr>
+                                <thead>
+                                    <tr class="table_head">
+                                        <th class="column-1">Product</th>
+                                        <th class="column-2">Name</th>
+                                        <th class="column-3">Size and color</th>
+                                        <th class="column-price">Price</th>
+                                        <th class="column-4">Quantity</th>
+                                        <th class="column-5">Sub Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table_body">
+                                    <!-- Rows will be dynamically added here by JavaScript -->
+                                </tbody>
                             </table>
                         </div>
 
@@ -85,7 +41,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
                     <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
                         <h4 class="mtext-109 cl2 p-b-30">
@@ -100,8 +55,8 @@
                             </div>
 
                             <div class="size-209">
-                                <span class="mtext-110 cl2">
-                                    $79.65
+                                <span class="mtext-110 cl2 sub_total_price_cart">
+
                                 </span>
                             </div>
                         </div>
@@ -115,8 +70,8 @@
 
                             <div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
                                 <p class="stext-111 cl6 p-t-2">
-                                    There are no shipping methods available. Please double check your address, or
-                                    contact us if you need any help.
+                                    There are no shipping methods available. Please double check your address, or contact us
+                                    if you need any help.
                                 </p>
 
                                 <div class="p-t-15">
@@ -162,8 +117,8 @@
                             </div>
 
                             <div class="size-209 p-t-1">
-                                <span class="mtext-110 cl2">
-                                    $79.65
+                                <span class="mtext-110 cl2 total_price_cart">
+                                    $0.00
                                 </span>
                             </div>
                         </div>
@@ -176,4 +131,68 @@
             </div>
         </div>
     </form>
+
+@section('new_js')
+    <script>
+        function fetchShoppingCartToTable() {
+            $.ajax({
+                url: "http://127.0.0.1:8000/show_shopping_cart",
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    // Clear the existing cart items
+                    $('.table_body').empty();
+
+                    let total_cart = 0;
+                    // Check if the response data has a 'cart' property
+                    if (data.cart) {
+                        data.cart.forEach(function(item) {
+                            total_cart += (item.base_price + item.color_additional_price + item
+                                .size_additional_price) * item.quanity
+
+                            let tableItemHtml = `
+                                <tr class="table_row">
+                                    <td class="column-1">
+                                        <div class="how-itemcart1">
+                                            <img src="storage/images/${item.product_image}" alt="IMG">
+                                        </div>
+                                    </td>
+                                    <td class="column-2">${item.product_name}</td>
+                                    <td class="column-price">${item.color_name}, ${item.size_name}</td>
+                                    <td class="column-3">$ ${(item.base_price + item.color_additional_price + item.size_additional_price)}</td>
+                                    <td class="column-4">
+                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus"></i>
+                                            </div>
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="${item.quanity}">
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="column-5">$ ${(item.base_price + item.color_additional_price + item.size_additional_price) * item.quanity}</td>
+                                </tr>
+                            `;
+                            $('.table_body').append(tableItemHtml);
+                        });
+                        $('.mtext-110.cl2.subtotal_price_cart').text(`$${total_cart.toFixed(2)}`);
+                        $('.total_price_cart').text(`$${total_cart.toFixed(2)}`);
+                        $('.sub_total_price_cart').text(`$${total_cart.toFixed(2)}`);
+                    } else {
+                        console.error("Response data does not contain 'cart' property");
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    console.error("There was a problem with the AJAX request:", error);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            fetchShoppingCartToTable();
+        });
+    </script>
+@endsection
 @endsection
