@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('user/head')
-
-<body class="animsition">
-
-    @include('user/header')
-
-    @yield('main_content')
-    <!-- Shoping Cart -->
+@extends('user.layout_user')
+@section('main_content')
     <form class="bg0 p-t-75 p-b-85">
         <div class="container">
             <div class="row">
@@ -147,8 +139,8 @@
                                     </div>
 
                                     <div class="bor8 bg0 m-b-22">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text"
-                                            name="postcode" placeholder="Postcode / Zip">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode"
+                                            placeholder="Postcode / Zip">
                                     </div>
 
                                     <div class="flex-w">
@@ -184,22 +176,4 @@
             </div>
         </div>
     </form>
-
-
-
-    @include('user/footer')
-
-    <!-- Back to top -->
-    <div class="btn-back-to-top" id="myBtn">
-        <span class="symbol-btn-back-to-top">
-            <i class="zmdi zmdi-chevron-up"></i>
-        </span>
-    </div>
-
-
-
-    @include('user/scripts')
-
-</body>
-
-</html>
+@endsection
