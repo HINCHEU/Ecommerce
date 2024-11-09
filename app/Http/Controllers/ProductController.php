@@ -125,6 +125,7 @@ class ProductController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'base_price' => $product->base_price,
+            'discount' => $product->discount,
             'description' => $product->description,
             'color' => [],
             'images' => []

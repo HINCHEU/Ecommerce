@@ -14,6 +14,7 @@
                                         <th class="column-3">Size and color</th>
                                         <th class="column-price">Price</th>
                                         <th class="column-4">Quantity</th>
+                                        <th class="column-price">discount</th>
                                         <th class="column-5">Sub Total</th>
                                     </tr>
                                 </thead>
@@ -171,7 +172,8 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="column-5">$ ${(item.base_price + item.color_additional_price + item.size_additional_price) * item.quanity}</td>
+                                    <td class="column-price" style="color:green;">${item.discount} %</td>
+                                    <td class="column-5">$ ${((item.base_price + item.color_additional_price + item.size_additional_price) * item.quanity)-((item.base_price + item.color_additional_price + item.size_additional_price) * item.quanity)*item.discount/100}</td>
                                 </tr>
                             `;
                             $('.table_body').append(tableItemHtml);

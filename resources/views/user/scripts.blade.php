@@ -194,6 +194,19 @@
                 success: function(data) {
                     // Populate the modal with product data
                     $('#product-name').text(data.name);
+                    $('#discount-base').text(data.discount);
+
+                    if (data.discount > 0) {
+                        $('#product-discount').text(
+                            `$${(data.base_price - (data.base_price * (data.discount / 100))).toFixed(2)}`
+                            );
+                        $('#product-price').addClass('text-decoration-line-through');
+                    } else {
+                        // Reset discount display if there is no discount
+                        $('#product-discount').text('');
+                        $('#product-price').removeClass('text-decoration-line-through');
+                    }
+
                     $('#product-price')
                         .data('base-price', data.base_price)
                         .text(`$${data.base_price.toFixed(2)}`);
@@ -239,7 +252,7 @@
                         dotsClass: 'slick3-dots',
                         customPaging: function(slick, index) {
                             var portrait = $(slick.$slides[index]).data(
-                                'thumb');
+                            'thumb');
                             return '<img src="' + portrait +
                                 '"/><div class="slick3-dot-overlay"></div>';
                         }
@@ -311,9 +324,18 @@
             const basePrice = parseFloat($('#product-price').data('base-price'));
             const colorPrice = parseFloat($('#color-select').find(':selected').data('addition-price')) || 0;
             const sizePrice = parseFloat($('#size-select').find(':selected').data('addition-price')) || 0;
-
+            const discountBasePrice = parseFloat($('#discount-base').text()) || 0;
             const totalPrice = basePrice + colorPrice + sizePrice;
+
             $('#product-price').text(`$${totalPrice.toFixed(2)}`);
+
+            if (discountBasePrice > 0) {
+                const totalPriceDiscount = (1 - discountBasePrice / 100) * totalPrice;
+                $('#product-discount').text(`$${totalPriceDiscount.toFixed(2)}`);
+            } else {
+                // Hide or clear discount if there's no discount
+                $('#product-discount').text('');
+            }
         }
 
         // Trigger price calculation when color or size is changed
@@ -400,6 +422,5 @@
                 swal("Error", "An error occurred while adding the product to the cart.", "error");
             }
         }
-
     });
 </script>

@@ -60,6 +60,7 @@ class Shopping_cartController extends Controller
             ->select([
                 'p.name as product_name',
                 'p.base_price as base_price',
+                'p.discount as discount',
                 'c.color as color_name',
                 'pc.additional_price as color_additional_price',
                 's.size as size_name',

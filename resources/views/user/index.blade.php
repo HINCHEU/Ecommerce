@@ -29,7 +29,12 @@
                             <h4 class="mtext-105 cl2 js-name-detail p-b-14" id="product-name">
                                 <!-- Product name will be inserted here -->
                             </h4>
+                            <span id="discount-base" style="display: none">
 
+                            </span>
+                            <span class="mtext-106 cl2" style="color: red;font-weight:bold;" id="product-discount">
+
+                            </span>
                             <span class="mtext-106 cl2" id="product-price">
                                 <!-- Product price will be inserted here -->
                             </span>
