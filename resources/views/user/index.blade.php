@@ -32,7 +32,7 @@
                             <span id="discount-base" style="display: none">
 
                             </span>
-                            <span class="mtext-106 cl2" style="color: red;font-weight:bold;" id="product-discount">
+                            <span class="mtext-106 cl2" style="color: #f12929;font-weight:bold;" id="product-discount">
 
                             </span>
                             <span class="mtext-106 cl2" id="product-price">
@@ -615,7 +615,7 @@
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
                                     <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                        {{ $item->name }}
+                                        {{ ucfirst($item->name) }}
                                     </a>
 
                                     <span class="stext-105 cl3">

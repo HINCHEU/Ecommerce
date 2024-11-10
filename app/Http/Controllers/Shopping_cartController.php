@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Models\shopping_cart;
 use Illuminate\Support\Facades\Auth;
@@ -82,4 +83,45 @@ class Shopping_cartController extends Controller
             return response()->json(['error' => 'Failed to delete shopping cart: ' . $e->getMessage()], 500);
         }
     }
+    public function applyCoupon(Request $request)
+    {
+        $couponCode = $request->input('coupon_code');
+        $cartTotal = $request->input('cart_total');  // Get the cart total from the request
+
+        // Validate inputs
+        if (empty($couponCode)) {
+            return response()->json(['success' => false, 'message' => 'Coupon code is required']);
+        }
+
+        if (!is_numeric($cartTotal) || $cartTotal <= 0) {
+            return response()->json(['success' => false, 'message' => 'Invalid cart total']);
+        }
+
+        // Find the coupon by code
+        $coupon = Coupon::where('code', $couponCode)->first();
+        if (!$coupon || !$coupon->isValid()) {
+            return response()->json(['success' => false, 'message' => 'Invalid or expired coupon code']);
+        }
+
+        // Check if cart total meets minimum purchase requirement
+        if ($coupon->min_purchase > $cartTotal) {
+            return response()->json(['success' => false, 'message' => 'Your cart total does not meet the minimum purchase requirement for this coupon. The minimum purchase is $' . number_format($coupon->min_purchase, 2)]);
+        }
+
+        // If coupon exists and is valid, calculate the discount
+        $discount = 0;
+        if ($coupon->discount_type == 'percentage') {
+            // Percentage discount
+            $discount = $cartTotal * ($coupon->discount_value / 100);
+        } else if ($coupon->discount_type == 'fixed') {
+            // Fixed amount discount
+            $discount = $coupon->discount_value;
+        }
+
+        return response()->json(['success' => true, 'discount' => $discount]);
+    }
+
+
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\CouponController;
 use App\Models\Category;
 use App\Models\ProductColor;
 use App\Models\User;
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ColorSeeder::class);
         $this->call(ProductColorSeeder::class);
         $this->call(ProductSizeSeeder::class);
+        $this->call(CouponSeeder::class);
 
         User::factory()->create([
             'name' => 'Test User',
