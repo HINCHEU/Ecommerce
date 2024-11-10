@@ -105,7 +105,7 @@ class Shopping_cartController extends Controller
 
         // Check if cart total meets minimum purchase requirement
         if ($coupon->min_purchase > $cartTotal) {
-            return response()->json(['success' => false, 'message' => 'Your cart total does not meet the minimum purchase requirement for this coupon. The minimum purchase is $' . number_format($coupon->min_purchase, 2)]);
+            return response()->json(['success' => false, 'message' => 'Your cart total is below the minimum for this coupon. The minimum purchase is $' . number_format($coupon->min_purchase, 2)]);
         }
 
         // If coupon exists and is valid, calculate the discount
