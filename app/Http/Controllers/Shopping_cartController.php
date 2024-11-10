@@ -120,8 +120,9 @@ class Shopping_cartController extends Controller
         }
         $minpurchase = $coupon->min_purchase;
 
-        return response()->json(['success' => true, 'discount' => $discount, 'min_purchase' => $minpurchase]);
+        return response()->json(['success' => true, 'discount' => $discount, 'min_purchase' => $minpurchase, 'description' => $coupon->description]);
     }
+
 
 
 
