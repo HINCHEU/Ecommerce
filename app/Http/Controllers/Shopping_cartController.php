@@ -112,13 +112,15 @@ class Shopping_cartController extends Controller
         $discount = 0;
         if ($coupon->discount_type == 'percentage') {
             // Percentage discount
-            $discount = $cartTotal * ($coupon->discount_value / 100);
+            $discount =  ($coupon->discount_value / 100);
+//            $discount = $cartTotal * ($coupon->discount_value / 100);
         } else if ($coupon->discount_type == 'fixed') {
             // Fixed amount discount
             $discount = $coupon->discount_value;
         }
+        $minpurchase = $coupon->min_purchase;
 
-        return response()->json(['success' => true, 'discount' => $discount]);
+        return response()->json(['success' => true, 'discount' => $discount, 'min_purchase' => $minpurchase]);
     }
 
 
