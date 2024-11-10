@@ -225,12 +225,7 @@
                             .trim());
 
                         if ($('#coupon_code').prop('disabled')) {
-                            swal({
-                                icon: 'info',
-                                title: 'Coupon Already Applied!',
-                                text: 'You have already applied this coupon.',
-                                confirmButtonText: 'Okay'
-                            });
+                            toastr.info('You have already applied this coupon.', 'Coupon Already Applied!');
                             return;
                         }
 
@@ -257,11 +252,10 @@
                                     minPurchaseAmount = parseFloat(response.min_purchase);
                                     isCouponApplied = true;
                                     swal({
-                                        icon: 'success',
                                         title: 'Coupon Applied!',
-                                        text: 'You got a discount of $' +
-                                            discount_total.toFixed(2),
-                                        confirmButtonText: 'Great!'
+                                        text: 'You got a discount of $' + discount_total.toFixed(2),
+                                        icon: 'success',
+                                        confirmButtonColor: '#3085d6'
                                     });
 
                                     $('#coupon_code').prop('disabled', true);
@@ -273,21 +267,11 @@
                                         .description); // Display coupon description
                                     updateTotals(cartTotal);
                                 } else {
-                                    swal({
-                                        icon: 'error',
-                                        title: 'Oops!',
-                                        text: response.message,
-                                        confirmButtonText: 'Okay'
-                                    });
+                                    toastr.error(response.message, 'Oops!');
                                 }
                             },
                             error: function(xhr, status, error) {
-                                swal({
-                                    icon: 'error',
-                                    title: 'Something went wrong!',
-                                    text: 'Please try again later.',
-                                    confirmButtonText: 'Okay'
-                                });
+                                toastr.error('Something went wrong! Please try again later.', 'Error');
                             }
                         });
                     });
@@ -302,12 +286,7 @@
                         $('#remove_coupon').hide(); // Hide the remove button
                         $('#coupon_description').text(''); // Clear the coupon description
 
-                        swal({
-                            icon: 'info',
-                            title: 'Coupon Removed',
-                            text: 'The coupon has been removed.',
-                            confirmButtonText: 'Okay'
-                        });
+                        toastr.warning('The coupon has been removed.', 'Coupon Removed');
 
                         // Recalculate totals without the discount
                         let totalCart = 0;
@@ -355,12 +334,7 @@
                 $('#coupon_description').text(''); // Clear the coupon description
 
                 // Alert the user
-                swal({
-                    icon: 'info',
-                    title: 'Coupon Removed',
-                    text: 'Your cart total is below the required minimum for the coupon. The coupon has been removed.',
-                    confirmButtonText: 'Okay'
-                });
+                toastr.info('Your cart total is below the required minimum for the coupon. The coupon has been removed.', 'Coupon Removed');
 
                 // Reset the flag
                 isCouponApplied = false;
