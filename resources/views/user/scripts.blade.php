@@ -150,14 +150,15 @@
                                     </div>
                                     <div class="header-cart-item-txt p-t-8 mt">
                                         <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                                            ${item.product_name}
-                                            
+                                            ${item.product_name.charAt(0).toUpperCase() + item.product_name.slice(1)
+                    }
+
                                         </a>
                                         <span class="header-cart-item-info">
-                                            ${item.quanity} x $${ item.base_price + item.color_additional_price + item.size_additional_price} 
+                                            ${item.quanity} x $${item.base_price + item.color_additional_price + item.size_additional_price}
                                             |   ${item.color_name} /  ${item.size_name}
                                         </span>
-                                        
+
                                     </div>
                                 </li>
                             `;
@@ -193,7 +194,7 @@
                 method: 'GET',
                 success: function(data) {
                     // Populate the modal with product data
-                    $('#product-name').text(data.name);
+                    $('#product-name').text(data.name.charAt(0).toUpperCase() + data.name.slice(1));
                     $('#discount-base').text(data.discount);
 
                     if (data.discount > 0) {
@@ -257,7 +258,9 @@
                                 '"/><div class="slick3-dot-overlay"></div>';
                         }
                     });
-
+                    function ucfirst(str) {
+                        return str.charAt(0).toUpperCase() + str.slice(1);
+                    }
                     // Populate color and size options
                     const uniqueColors = new Set();
                     const uniqueSizes = new Set();
@@ -271,7 +274,7 @@
                         if (!uniqueColors.has(color.color)) {
                             uniqueColors.add(color.color);
                             $('#color-select').append(
-                                `<option value="${color.color}" data-addition-price="${color.addition_price}" data-productcolor-id="${color.productcolor_id}">${color.color}</option>`
+                                `<option value="${color.color}" data-addition-price="${color.addition_price}" data-productcolor-id="${color.productcolor_id}">${ucfirst(color.color)}</option>`
                             );
                         }
 
@@ -279,7 +282,7 @@
                             if (!uniqueSizes.has(size.size)) {
                                 uniqueSizes.add(size.size);
                                 $('#size-select').append(
-                                    `<option value="${size.size}" data-addition-price="${size.addition_price}" data-productsize-id="${size.productsize_id}">${size.size}</option>`
+                                    `<option value="${size.size}" data-addition-price="${size.addition_price}" data-productsize-id="${size.productsize_id}">${ucfirst(size.size)}</option>`
                                 );
                             }
                         });
