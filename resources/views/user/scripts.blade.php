@@ -168,7 +168,7 @@
                     $('#myCart').append(cartItemHtml);
                 });
                 console.log("total price is " + totalPrice);
-                // Update total cart display
+                // Update total cart display (fixed selector)
                 $('#total_price_cart').html(`
                         <div class="header-cart-total w-full p-tb-40">
                             Total: $${totalPrice.toFixed(2)}

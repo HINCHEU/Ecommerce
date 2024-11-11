@@ -19,8 +19,8 @@
                 </ul>
 
                 <div class="w-full">
-                    <div class="header-cart-total w-full p-tb-40" id="toatl_cart">
-
+                    <div class="header-cart-total w-full p-tb-40" id="total_price_cart">
+                        <!-- Total will be displayed here -->
                     </div>
 
                     <div class="header-cart-buttons flex-w w-full">
