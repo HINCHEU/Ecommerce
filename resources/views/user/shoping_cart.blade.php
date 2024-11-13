@@ -138,9 +138,9 @@
                             </div>
                         </div>
 
-                        <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                            Proceed to Checkout
-                        </button>
+                        <a href="#" id="paypal-button-container" class="">
+
+                        </a>
                     </div>
                 </div>
             </div>
@@ -148,6 +148,8 @@
     </form>
 
 @section('new_js')
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script> <!-- Replace YOUR_CLIENT_ID with your actual client ID -->
+
     <script>
         let appliedDiscount = 0; // Global variable to store coupon discount
         let minPurchaseAmount = 0;
@@ -172,7 +174,7 @@
                             total_cart += itemSubtotal;
 
                             let tableItemHtml = `
-            <tr class="table_row">
+            <tr class="table_row" data-product-id="${item.product_id}" data-productcolor-id="${item.productcolor_id}" data-productsize-id="${item.productsize_id}">
                 <td class="column-1">
                     <div class="how-itemcart1">
                         <img src="storage/images/${item.product_image}" alt="IMG">
@@ -225,7 +227,8 @@
                             .trim());
 
                         if ($('#coupon_code').prop('disabled')) {
-                            toastr.info('You have already applied this coupon.', 'Coupon Already Applied!');
+                            toastr.info('You have already applied this coupon.',
+                                'Coupon Already Applied!');
                             return;
                         }
 
@@ -253,7 +256,8 @@
                                     isCouponApplied = true;
                                     swal({
                                         title: 'Coupon Applied!',
-                                        text: 'You got a discount of $' + discount_total.toFixed(2),
+                                        text: 'You got a discount of $' +
+                                            discount_total.toFixed(2),
                                         icon: 'success',
                                         confirmButtonColor: '#3085d6'
                                     });
@@ -262,16 +266,25 @@
                                     $('#apply_coupon').prop('disabled', true);
                                     $('#remove_coupon').show(); // Show the remove button
 
+
                                     appliedDiscount = response.discount;
                                     $('#coupon_description').text(response
                                         .description); // Display coupon description
+
+                                    // Store coupon_id in a hidden element or variable
+                                    var couponId = response.coupon_id; // Store coupon_id
+                                    $('#coupon_id').val(
+                                        couponId); // Optionally, store it in a hidden field
+
                                     updateTotals(cartTotal);
                                 } else {
                                     toastr.error(response.message, 'Oops!');
                                 }
                             },
                             error: function(xhr, status, error) {
-                                toastr.error('Something went wrong! Please try again later.', 'Error');
+                                toastr.error(
+                                    'Something went wrong! Please try again later.',
+                                    'Error');
                             }
                         });
                     });
@@ -334,7 +347,8 @@
                 $('#coupon_description').text(''); // Clear the coupon description
 
                 // Alert the user
-                toastr.info('Your cart total is below the required minimum for the coupon. The coupon has been removed.', 'Coupon Removed');
+                toastr.info('Your cart total is below the required minimum for the coupon. The coupon has been removed.',
+                    'Coupon Removed');
 
                 // Reset the flag
                 isCouponApplied = false;
@@ -350,6 +364,118 @@
             $('.total_price_cart').text(`$${finalTotal.toFixed(2)}`);
             $('.discount_total').text(`$${discount_total.toFixed(2)}`);
         }
+
+        // // PayPal Button Integration
+        // paypal.Buttons({
+        //     createOrder: function(data, actions) {
+        //         return actions.order.create({
+        //             purchase_units: [{
+        //                 amount: {
+        //                     value: parseFloat($('.total_price_cart').text().replace('$',
+        //                         '')) // Use the total amount from your cart
+        //                 }
+        //             }]
+        //         });
+        //     },
+        //     onApprove: function(data, actions) {
+        //         return actions.order.capture().then(function(details) {
+        //             // Payment successful
+        //             alert('Transaction completed by ' + details.payer.name.given_name);
+        //             // Redirect to a success page or update the order status in your database
+        //             window.location.href =
+        //             "{{ route('payment.success') }}"; // Define this route in your web.php
+        //         });
+        //     },
+        //     onCancel: function(data) {
+        //         // Payment cancelled
+        //         alert('Payment was cancelled.');
+        //         // Handle the cancellation, maybe redirect to a specific page
+        //     },
+        //     onError: function(err) {
+        //         // Payment error
+        //         console.error('An error occurred during the transaction', err);
+        //         alert('An error occurred during the transaction. Please try again.');
+        //     }
+        // }).render('#paypal-button-container'); // Render the PayPal button into the container
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: parseFloat($('.total_price_cart').text().replace('$', ''))
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Collect cart items data
+                    // Collect cart items data
+                    let cartItems = [];
+                    $('.table_row').each(function() {
+                        let row = $(this);
+                        let quantityInput = row.find('.quantity-input');
+
+                        cartItems.push({
+                            product_id: row.data(
+                                'product-id'
+                            ), // Assuming you've added a data attribute for product ID
+                            productcolor_id: row.data(
+                                'productcolor-id'
+                            ), // Assuming you've added a data attribute for product color ID
+                            productsize_id: row.data(
+                                'productsize-id'
+                            ), // Assuming you've added a data attribute for product size ID
+                            quantity: parseInt(quantityInput.val()),
+                            base_price: parseFloat(quantityInput.data('base-price')),
+                            color_additional_price: parseFloat(quantityInput.data(
+                                'color-price')),
+                            size_additional_price: parseFloat(quantityInput.data(
+                                'size-price')),
+                            discount: parseFloat(quantityInput.data('discount'))
+                        });
+                    });
+                    console.log(cartItems);
+
+
+                    // Send order data to backend
+                    $.ajax({
+                        url: '/process-paypal-order',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            shipping_address: $('input[name="state"]').val() + ', ' +
+                                $('input[name="postcode"]').val(),
+                            total_price: parseFloat($('.total_price_cart').text().replace('$',
+                                '')),
+                            discount_amount: parseFloat($('.discount_total').text().replace('$',
+                                '')),
+                            coupon_id: window
+                                .appliedCouponId, // Add this variable when applying coupon
+                            cart_items: cartItems,
+                            paypal_order_id: data.orderID,
+                            paypal_payer_id: details.payer.payer_id
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Clear cart and redirect to success page
+                                // window.location.href = "/payment/success/" + response
+                                //     .order_id;
+                                alert('successfully')
+                            } else {
+                                alert('Error processing order. Please contact support.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                            alert('Error processing order. Please try again.');
+                        }
+                    });
+                });
+            }
+        }).render('#paypal-button-container');
 
         $(document).ready(function() {
             fetchShoppingCartToTable();

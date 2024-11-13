@@ -60,12 +60,15 @@ class Shopping_cartController extends Controller
             ->where('sc.user_id', $userId)
             ->select([
                 'p.name as product_name',
+                'p.id as product_id',
                 'p.base_price as base_price',
                 'p.discount as discount',
                 'c.color as color_name',
                 'pc.additional_price as color_additional_price',
+                'pc.id as productcolor_id',
                 's.size as size_name',
                 'ps.additional_price as size_additional_price',
+                'ps.id as productsize_id',
                 'sc.quanity',
                 DB::raw('(SELECT image FROM images WHERE product_id = p.id LIMIT 1) as product_image')
             ])
@@ -113,19 +116,13 @@ class Shopping_cartController extends Controller
         if ($coupon->discount_type == 'percentage') {
             // Percentage discount
             $discount =  ($coupon->discount_value / 100);
-//            $discount = $cartTotal * ($coupon->discount_value / 100);
+            //            $discount = $cartTotal * ($coupon->discount_value / 100);
         } else if ($coupon->discount_type == 'fixed') {
             // Fixed amount discount
             $discount = $coupon->discount_value;
         }
         $minpurchase = $coupon->min_purchase;
 
-        return response()->json(['success' => true, 'discount' => $discount, 'min_purchase' => $minpurchase, 'description' => $coupon->description]);
-
+        return response()->json(['success' => true, 'discount' => $discount, 'min_purchase' => $minpurchase, 'description' => $coupon->description, 'coupon_id' => $coupon->id]);
     }
-
-
-
-
-
 }

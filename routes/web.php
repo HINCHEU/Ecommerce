@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 // Route::get('/users', [UserController::class, 'index']);
 Route::get('/users', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
@@ -128,3 +129,20 @@ Route::post('/shoping_cart', [\App\Http\Controllers\Shopping_cartController::cla
 Route::get('/show_shopping_cart', [\App\Http\Controllers\Shopping_cartController::class, 'show'])->name('shpping_cart.show');
 Route::get('/deleteAllProduct', [\App\Http\Controllers\Shopping_cartController::class, 'delete'])->name('shpping_cart.delete');
 Route::post('/apply_coupon', [\App\Http\Controllers\Shopping_cartController::class, 'applyCoupon']);
+
+
+
+Route::get('/checkout', function () {
+    return view('user.checkout');
+})->name('checkout');
+
+Route::get('/cart-summary', [\App\Http\Controllers\Shopping_cartController::class, 'getCartSummary'])->name('cart.summary');
+
+Route::post('/process-paypal-order', [OrderController::class, 'processPayPalOrder'])
+    ->name('process.paypal.order')
+    ->middleware('auth');
+
+Route::post('/create-paypal-order', [\App\Http\Controllers\PayPalController::class, 'createOrder'])->name('paypal.create');
+Route::post('/capture-paypal-order', [\App\Http\Controllers\PayPalController::class, 'captureOrder'])->name('paypal.capture');
+
+Route::get('/payment-success', [PaymentController::class, 'success'])->name('payment.success');

@@ -7,7 +7,7 @@
 <script src="user/vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
 <script src="user/vendor/select2/select2.min.js"></script>
-
+<script src="https://www.paypal.com/sdk/js?client-id={{ config('paypal.client_id') }}&currency=USD"></script>
 
 <script>
     $(".js-select2").each(function() {
