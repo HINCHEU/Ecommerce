@@ -30,6 +30,9 @@ test
 
 3. Connect Project to database (.env)
     - Set DB_DATABASE, DB_USERNAME, and DB_PASSWORD to match your local MySQL setup.
+    ```cmd: 
+    composer require paypal/rest-api-sdk-php
+    ```
 
 4. Migrate Database
 

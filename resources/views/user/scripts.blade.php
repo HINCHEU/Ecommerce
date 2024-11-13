@@ -196,13 +196,14 @@
                 method: 'GET',
                 success: function(data) {
                     // Populate the modal with product data
-                    $('#product-name').text(data.name.charAt(0).toUpperCase() + data.name.slice(1));
+                    $('#product-name').text(data.name.charAt(0).toUpperCase() + data.name
+                        .slice(1));
                     $('#discount-base').text(data.discount);
 
                     if (data.discount > 0) {
                         $('#product-discount').text(
                             `$${(data.base_price - (data.base_price * (data.discount / 100))).toFixed(2)}`
-                            );
+                        );
                         $('#product-price').addClass('text-decoration-line-through');
                     } else {
                         // Reset discount display if there is no discount
@@ -255,11 +256,12 @@
                         dotsClass: 'slick3-dots',
                         customPaging: function(slick, index) {
                             var portrait = $(slick.$slides[index]).data(
-                            'thumb');
+                                'thumb');
                             return '<img src="' + portrait +
                                 '"/><div class="slick3-dot-overlay"></div>';
                         }
                     });
+
                     function ucfirst(str) {
                         return str.charAt(0).toUpperCase() + str.slice(1);
                     }

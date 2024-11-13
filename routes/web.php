@@ -4,13 +4,14 @@ use App\Http\Controllers\ProductController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use Laravel\Fortify\Features;
+use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
+use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
+use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 
-// Route::get('/users', [UserController::class, 'index']);
 Route::get('/users', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
-// Route::get('/', function () {
-//     // return view('admin/index');
-//     return view('admin/login');
-// });
+
+
 
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {
@@ -95,11 +96,12 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     });
 });
 
-// Route::get('/setting', function () {
 
-//     return view('admin/setting');
-// });
-//========================================================
+
+
+
+
+
 Route::get('/', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
 
 

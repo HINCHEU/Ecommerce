@@ -34,22 +34,28 @@ class FortifyServiceProvider extends ServiceProvider
             return view('admin.register');
         });
 
+        //verify
+
+        Fortify::verifyEmailView(function () {
+            return view('admin.verify-email');
+        });
+
         $this->app->instance(LoginResponse::class, new class implements LogoutResponse {
             public function toResponse($request)
             {
-                if(Auth::user() -> is_admin){
+                if (Auth::user()->is_admin) {
                     return redirect('/dashboard');
                 }
                 return redirect('/users');
             }
         });
-         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
-             public function toResponse($request)
-             {
+        $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
+            public function toResponse($request)
+            {
 
-                 return redirect('/login');
-             }
-         });
+                return redirect('/login');
+            }
+        });
     }
 
     /**

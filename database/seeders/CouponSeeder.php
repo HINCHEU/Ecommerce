@@ -22,7 +22,7 @@ class CouponSeeder extends Seeder
                 'discount_type' => 'percentage',
                 'discount_value' => 10,
                 'min_purchase' => 50.00,
-                'expiration_date' => Carbon::create('2024', '12', '31'),
+                'expiration_date' => Carbon::create('2025', '12', '31'),
                 'usage_limit' => 100,
                 'used_count' => 0,
                 'is_active' => true
@@ -33,7 +33,7 @@ class CouponSeeder extends Seeder
                 'discount_type' => 'free_shipping',
                 'discount_value' => 0,
                 'min_purchase' => 100.00,
-                'expiration_date' => Carbon::create('2024', '11', '30'),
+                'expiration_date' => Carbon::create('2025', '11', '30'),
                 'usage_limit' => 200,
                 'used_count' => 0,
                 'is_active' => true
@@ -44,7 +44,7 @@ class CouponSeeder extends Seeder
                 'discount_type' => 'fixed',
                 'discount_value' => 15.00,
                 'min_purchase' => 75.00,
-                'expiration_date' => Carbon::create('2024', '08', '01'),
+                'expiration_date' => Carbon::create('2025', '08', '01'),
                 'usage_limit' => 50,
                 'used_count' => 0,
                 'is_active' => true
@@ -55,8 +55,8 @@ class CouponSeeder extends Seeder
                 'discount_type' => 'percentage',
                 'discount_value' => 50,
                 'min_purchase' => 0,
-                'expiration_date' => Carbon::create('2024', '11', '29'),
-                'usage_limit' => 500,
+                'expiration_date' => Carbon::create('2025', '11', '29'),
+                'usage_limit' => 100,
                 'used_count' => 0,
                 'is_active' => true
             ],
@@ -66,8 +66,8 @@ class CouponSeeder extends Seeder
                 'discount_type' => 'percentage',
                 'discount_value' => 30,
                 'min_purchase' => 0,
-                'expiration_date' => Carbon::create('2024', '11', '17'),
-                'usage_limit' => 500,
+                'expiration_date' => Carbon::create('2025', '11', '17'),
+                'usage_limit' => 100,
                 'used_count' => 0,
                 'is_active' => true
             ]
