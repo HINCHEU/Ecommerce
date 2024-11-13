@@ -94,24 +94,40 @@
                                         Calculate Shipping
                                     </span>
 
-                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                                    {{-- <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
                                         <select class="js-select2" name="time">
                                             <option>Select a country...</option>
                                             <option>USA</option>
                                             <option>UK</option>
                                         </select>
                                         <div class="dropDownSelect2"></div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="bor8 bg0 m-b-12">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state"
-                                            placeholder="State /  country">
+                                            placeholder="State / Country" required>
+                                    </div>
+
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="city"
+                                            placeholder="City" required>
+                                    </div>
+
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="address"
+                                            placeholder="Street Address" required>
+                                    </div>
+
+                                    <div class="bor8 bg0 m-b-12">
+                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone"
+                                            placeholder="Phone Number" required>
                                     </div>
 
                                     <div class="bor8 bg0 m-b-22">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode"
-                                            placeholder="Postcode / Zip">
+                                            placeholder="Postcode / Zip" required>
                                     </div>
+
 
                                     {{--                                    <div class="flex-w"> --}}
                                     {{--                                        <div --}}
@@ -271,10 +287,9 @@
                                     $('#coupon_description').text(response
                                         .description); // Display coupon description
 
-                                    // Store coupon_id in a hidden element or variable
-                                    var couponId = response.coupon_id; // Store coupon_id
-                                    $('#coupon_id').val(
-                                        couponId); // Optionally, store it in a hidden field
+                                    // Store coupon_id in local storage
+                                    localStorage.setItem('appliedCouponId', response
+                                        .coupon_id);
 
                                     updateTotals(cartTotal);
                                 } else {
@@ -399,6 +414,10 @@
         // }).render('#paypal-button-container'); // Render the PayPal button into the container
         paypal.Buttons({
             createOrder: function(data, actions) {
+                if (!validateShippingInfo()) {
+                    return actions.reject(); // Prevent the order from being created
+                }
+
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
@@ -410,22 +429,15 @@
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(details) {
                     // Collect cart items data
-                    // Collect cart items data
                     let cartItems = [];
                     $('.table_row').each(function() {
                         let row = $(this);
                         let quantityInput = row.find('.quantity-input');
 
                         cartItems.push({
-                            product_id: row.data(
-                                'product-id'
-                            ), // Assuming you've added a data attribute for product ID
-                            productcolor_id: row.data(
-                                'productcolor-id'
-                            ), // Assuming you've added a data attribute for product color ID
-                            productsize_id: row.data(
-                                'productsize-id'
-                            ), // Assuming you've added a data attribute for product size ID
+                            product_id: row.data('product-id'),
+                            productcolor_id: row.data('productcolor-id'),
+                            productsize_id: row.data('productsize-id'),
                             quantity: parseInt(quantityInput.val()),
                             base_price: parseFloat(quantityInput.data('base-price')),
                             color_additional_price: parseFloat(quantityInput.data(
@@ -435,35 +447,44 @@
                             discount: parseFloat(quantityInput.data('discount'))
                         });
                     });
-                    console.log(cartItems);
-
 
                     // Send order data to backend
+                    const orderData = {
+                        shipping_address: $('input[name="state"]').val() + ', ' +
+                            $('input[name="city"]').val() + ', ' +
+                            $('input[name="address"]').val() + ', ' +
+                            $('input[name="postcode"]').val() + ', ' +
+                            $('input[name="phone"]').val(),
+
+
+
+                        total_price: parseFloat($('.total_price_cart').text().replace('$', '')),
+                        discount_amount: parseFloat($('.discount_total').text().replace('$', '')),
+                        coupon_id: localStorage.getItem('appliedCouponId'),
+                        cart_items: cartItems,
+                        paypal_order_id: data.orderID,
+                        paypal_payer_id: details.payer.payer_id
+                    };
+
                     $.ajax({
                         url: '/process-paypal-order',
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        data: {
-                            shipping_address: $('input[name="state"]').val() + ', ' +
-                                $('input[name="postcode"]').val(),
-                            total_price: parseFloat($('.total_price_cart').text().replace('$',
-                                '')),
-                            discount_amount: parseFloat($('.discount_total').text().replace('$',
-                                '')),
-                            coupon_id: window
-                                .appliedCouponId, // Add this variable when applying coupon
-                            cart_items: cartItems,
-                            paypal_order_id: data.orderID,
-                            paypal_payer_id: details.payer.payer_id
-                        },
+                        data: orderData,
                         success: function(response) {
                             if (response.success) {
-                                // Clear cart and redirect to success page
-                                // window.location.href = "/payment/success/" + response
-                                //     .order_id;
-                                alert('successfully')
+                                swal({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: 'Order processed successfully!'
+                                }).then(() => {
+                                    // Delay redirect by 3 seconds after sweet alert is closed
+                                    setTimeout(() => {
+                                        window.location.href = '/payment-success';
+                                    }, 1000);
+                                });
                             } else {
                                 alert('Error processing order. Please contact support.');
                             }
@@ -480,6 +501,20 @@
         $(document).ready(function() {
             fetchShoppingCartToTable();
         });
+
+        function validateShippingInfo() {
+            const state = $('input[name="state"]').val().trim();
+            const city = $('input[name="city"]').val().trim();
+            const address = $('input[name="address"]').val().trim();
+            const postcode = $('input[name="postcode"]').val().trim();
+
+            if (state.length <= 2 || city.length <= 2 || address.length <= 2 || postcode.length <= 2) {
+                toastr.error('Please fill out all shipping fields with more than 2 characters.',
+                    'Shipping Information Required');
+                return false;
+            }
+            return true;
+        }
     </script>
 @endsection
 @endsection

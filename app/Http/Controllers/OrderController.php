@@ -14,8 +14,8 @@ class OrderController extends Controller
 {
     public function processPayPalOrder(Request $request)
     {
-
-        $request->validate([
+        // Validate the request
+        $validatedData = $request->validate([
             'shipping_address' => 'required|string',
             'total_price' => 'required|numeric',
             'cart_items.*.product_id' => 'required|integer|exists:products,id',
@@ -27,60 +27,63 @@ class OrderController extends Controller
             'cart_items.*.size_additional_price' => 'required|numeric',
             'cart_items.*.discount' => 'nullable|numeric|min:0|max:100',
             'paypal_order_id' => 'required|string',
-            'paypal_payer_id' => 'required|string'
+            'paypal_payer_id' => 'required|string',
+            'coupon_id' => 'nullable|integer',
+            'discount_amount' => 'nullable|numeric'
         ]);
-
 
         try {
             DB::beginTransaction();
 
-            // Create order
+            // Create the order
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'status' => 'pending',
-                'shipping_address' => $request->shipping_address,
-                'total_price' => $request->total_price,
-                // 'coupon_id' => $request->coupon_id ?? null,
+                'shipping_address' => $validatedData['shipping_address'],
+                'total_price' => $validatedData['total_price'],
+                'coupon_id' => $validatedData['coupon_id'] ?? null,
             ]);
 
-            // // Create order items
-            // foreach ($request->cart_items as $item) {
-            //     OrderItem::create([
-            //         'order_id' => $order->id,
-            //         'product_id' => $item['product_id'],
-            //         'productcolor_id' => $item['productcolor_id'],  // Store the color ID
-            //         'productsize_id' => $item['productsize_id'],    // Store the size ID
-            //         'quantity' => $item['quantity'],
-            //         'price' => $item['base_price'] + $item['color_additional_price'] + $item['size_additional_price'],
-            //         'final_price' => ($item['base_price'] + $item['color_additional_price'] + $item['size_additional_price'])
-            //             * $item['quantity'] * (1 - $item['discount'] / 100)
-            //     ]);
-            // }
+            // Create order items
+            foreach ($validatedData['cart_items'] as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'productcolor_id' => $item['productcolor_id'],
+                    'productsize_id' => $item['productsize_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['base_price'] + $item['color_additional_price'] + $item['size_additional_price'],
+                    'final_price' => ($item['base_price'] + $item['color_additional_price'] + $item['size_additional_price'])
+                        * $item['quantity'] * (1 - $item['discount'] / 100),
+                ]);
+            }
 
-            // // Create payment record
-            // Payment::create([
-            //     'order_id' => $order->id,
-            //     'payment_method' => 'PayPal',
-            //     'payment_status' => 'completed',
-            //     'discount_amount' => $request->discount_amount ?? 0,
-            //     'amount' => $request->total_price,
-            // ]);
+            // Create payment record
+            Payment::create([
+                'order_id' => $order->id,
+                'payment_method' => 'PayPal',
+                'payment_status' => 'completed',
+                'discount_amount' => $validatedData['discount_amount'] ?? 0,
+                'amount' => $validatedData['total_price'],
+            ]);
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Order processed successfully',
-                'order_id' => $order->id
+            \Log::info('Order Dataaa:', $request->all());
+            \Log::info('Payment Data:', [
+                'order_id' => $order->id,
+                'payment_method' => 'PayPal',
+                'payment_status' => 'completed',
+                'discount_amount' => $validatedData['discount_amount'] ?? 0,
+                'amount' => $validatedData['total_price'],
             ]);
+
+            return response()->json(['success' => true, 'order_id' => $order->id]);
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::info('Incoming PayPal Order Data:', ['cart_items' => $request->input('cart_items')]);
+            \Log::error('Error processing PayPal order: ' . $e->getMessage());
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Error processing order: ' . $e->getMessage()
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Error processing order'], 500);
         }
     }
 }

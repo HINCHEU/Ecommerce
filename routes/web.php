@@ -142,7 +142,7 @@ Route::post('/process-paypal-order', [OrderController::class, 'processPayPalOrde
     ->name('process.paypal.order')
     ->middleware('auth');
 
-Route::post('/create-paypal-order', [\App\Http\Controllers\PayPalController::class, 'createOrder'])->name('paypal.create');
-Route::post('/capture-paypal-order', [\App\Http\Controllers\PayPalController::class, 'captureOrder'])->name('paypal.capture');
-
-Route::get('/payment-success', [PaymentController::class, 'success'])->name('payment.success');
+// Route::post('/create-paypal-order', [\App\Http\Controllers\PayPalController::class, 'createOrder'])->name('paypal.create');
+// Route::post('/capture-paypal-order', [\App\Http\Controllers\PayPalController::class, 'captureOrder'])->name('paypal.capture');
+// make exception
+Route::get('/payment-success', [\App\Http\Controllers\PaymentController::class, 'success'])->name('payment.success');
