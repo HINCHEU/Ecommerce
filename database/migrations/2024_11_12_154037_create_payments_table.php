@@ -20,7 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->enum('payment_status', ['pending', 'completed', 'failed'])->default('pending');
             $table->decimal('discount_amount', 10, 2)->default(0.00);
             $table->decimal('amount', 10, 2);
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
         });
     }
 

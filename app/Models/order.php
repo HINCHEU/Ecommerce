@@ -13,5 +13,6 @@ class order extends Model
         'user_id',
         'shipping_address',
         'total_price',
+        'coupon_id',
     ];
 }
