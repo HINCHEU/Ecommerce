@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use log;
+use App\Mail\OrderReceipt;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -68,6 +70,17 @@ class OrderController extends Controller
             ]);
 
             DB::commit();
+
+            // Send order receipt email
+            $order = Order::with([
+                'orderItems.product',
+                'orderItems.productColor',
+                'orderItems.productSize',
+                'payment'
+            ])
+                ->find($order->id);
+
+            Mail::to($request->user()->email)->send(new OrderReceipt($order));
 
             \Log::info('Order Dataaa:', $request->all());
             \Log::info('Payment Data:', [

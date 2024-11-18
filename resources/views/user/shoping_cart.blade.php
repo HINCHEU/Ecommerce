@@ -105,27 +105,27 @@
 
                                     <div class="bor8 bg0 m-b-12">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state"
-                                            placeholder="State / Country" required>
+                                            placeholder="State / Country" value="cambodia" required>
                                     </div>
 
                                     <div class="bor8 bg0 m-b-12">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="city"
-                                            placeholder="City" required>
+                                            placeholder="City" value="Phnom Penh" required>
                                     </div>
 
                                     <div class="bor8 bg0 m-b-12">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="address"
-                                            placeholder="Street Address" required>
+                                            placeholder="Street Address" value="street 271" required>
                                     </div>
 
                                     <div class="bor8 bg0 m-b-12">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="phone"
-                                            placeholder="Phone Number" required>
+                                            placeholder="Phone Number" value="01855555" required>
                                     </div>
 
                                     <div class="bor8 bg0 m-b-22">
                                         <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode"
-                                            placeholder="Postcode / Zip" required>
+                                            placeholder="Postcode / Zip" value="12000000" required>
                                     </div>
 
 
@@ -474,7 +474,9 @@
                         },
                         data: orderData,
                         success: function(response) {
+                            console.log(orderData);
                             if (response.success) {
+                            
                                 swal({
                                     icon: 'success',
                                     title: 'Success!',
@@ -482,7 +484,8 @@
                                 }).then(() => {
                                     // Delay redirect by 3 seconds after sweet alert is closed
                                     setTimeout(() => {
-                                        window.location.href = '/payment-success';
+                                        window.location.href =
+                                            '/payment-success';
                                     }, 1000);
                                 });
                             } else {

@@ -16,23 +16,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- Theme Style -->
-    <link rel="stylesheet" type="text/css" href="admin/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="admin/css/animation.css">
-    <link rel="stylesheet" type="text/css" href="admin/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="admin/css/bootstrap-select.min.css">
-    <link rel="stylesheet" type="text/css" href="admin/css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/animate.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/animation.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/style.css') }}">
 
 
 
     <!-- Font -->
-    <link rel="stylesheet" href="admin/font/fonts.css">
+    <link rel="stylesheet" href="{{ asset('admin/font/fonts.css') }}">
 
     <!-- Icon -->
-    <link rel="stylesheet" href="admin/icon/style.css">
+    <link rel="stylesheet" href="{{ asset('admin/icon/style.css') }}">
 
     <!-- Favicon and Touch Icons  -->
-    <link rel="shortcut icon" href="admin/images/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="admin/images/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('admin/images/favicon.png') }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('admin/images/favicon.png') }}">
 
 </head>
 
@@ -150,10 +150,10 @@
     <!-- /#wrapper -->
 
     <!-- Javascript -->
-    <script src="admin/js/jquery.min.js"></script>
-    <script src="admin/js/bootstrap.min.js"></script>
-    <script src="admin/js/bootstrap-select.min.js"></script>
-    <script src="admin/js/main.js"></script>
+    <script src="{{ asset('admin/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('admin/js/main.js') }}"></script>
 
 </body>
 

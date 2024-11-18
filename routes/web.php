@@ -9,12 +9,14 @@ use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 
-Route::get('/users', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
 
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/users', [\App\Http\Controllers\UserController::class, 'product'])->name('user.index');
+});
 
 
-Route::middleware(['auth', IsAdmin::class])->group(function () {
+Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     // Route::get('/admin', function () {
     //     //This is for admin interface
     //     return view('auth.index');
