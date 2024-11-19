@@ -96,6 +96,8 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
 
         return view('admin/report');
     });
+    Route::get('/marketing', [App\Http\Controllers\EmailController::class, 'index'])->name('marketing.index');
+    Route::post('/emails/send', [App\Http\Controllers\EmailController::class, 'send'])->name('emails.send');
 });
 
 

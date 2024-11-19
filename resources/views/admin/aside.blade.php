@@ -200,6 +200,12 @@
                         <div class="text">Report</div>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="{{ url('/marketing') }}" class="">
+                        <div class="icon"><i class="icon-pie-chart"></i></div>
+                        <div class="text">Marketing</div>
+                    </a>
+                </li>
             </ul>vv
         </div>
         <div class="center-item">

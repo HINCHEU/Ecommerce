@@ -136,9 +136,9 @@
                 <p>Tel: 01888888</p>
                 <p>Baramey@gmail.com</p>
             </div>
-            <div class="logo">
+            {{-- <div class="logo">
                 <img src="{{ asset('logo/logo.png') }}" alt="Logo">
-            </div>
+            </div> --}}
             <div class="receipt-info">
                 <p><strong>Payment Date:</strong> {{ $order->created_at->format('F d, Y') }}</p>
                 <p><strong>Receipt No.:</strong> {{ $order->id }}</p>
