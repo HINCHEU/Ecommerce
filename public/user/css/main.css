@@ -942,7 +942,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 .header-cart {
   position: fixed;
   z-index: 1100;
-  width: 390px;
+  width: 500px;
   max-width: calc(100% - 30px);
   height: 100vh;
   top: 0;
@@ -2814,7 +2814,7 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 .bor1 {
-  border-radius: 23px;
+  border-radius: 10px;
 }
 
 .bor2 {
