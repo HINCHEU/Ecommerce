@@ -49,6 +49,15 @@
                                                     {{ session('success') }}
                                                 </div>
                                             @endif
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
 
                                             <fieldset class="name mb-24">
                                                 <div class="body-title mb-10">Subject<span class="tf-color-1">*</span></div>
